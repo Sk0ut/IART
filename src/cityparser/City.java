@@ -1,3 +1,5 @@
+package cityparser;
+
 /**
  * Created by up201304205 on 01-03-2016.
  */
