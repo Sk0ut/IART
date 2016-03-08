@@ -12,8 +12,9 @@ public class Main {
     public static void main (String args[]) {
         CityParser parser = new CityParser();
         List<City> cities = parser.getCities(fileName);
-        if (cities != null)
+        if (cities != null) {
             cities.forEach(System.out::println);
-
+            System.out.println("Nº total de concelhos: " + cities.size());
+        }
     }
 }
