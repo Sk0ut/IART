@@ -5,25 +5,106 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This class provides an implementation of a Genetic Algorithm. In order to use it, you need to override two methods:
+ * evaluate() and stopCondition(). The class supports three main customizable things: the selection algorithm, the
+ * crossover algorithm and the option to use elitism or not.
+ * The algorithm consists in several steps:
+ * 1- Randomize an initial population with size N.
+ * 2- Select two parents to pass down their genes (selection phase).
+ * 3- Pass genes from both parents to an offspring (crossover phase).
+ * 4- Each gene from each offspring has a small chance of being mutated. Go through each gene and mutate it according to
+ * the given probability.
+ * 5- Check if the end condition applies. If not, return to step 2.
+ */
 public abstract class GeneticAlgorithm {
 
+    /**
+     * Uses the tournament approach in selecting the two parents. The tournament approach consists in choosing N
+     * random chromosomes and picking the best.
+     */
     public static final int TOURNAMENTSELECTION = 1;
+
+    /**
+     * Uses the roulette approach in selecting the two parents. The roulette approach assigns a probability to each
+     * chromosome to be picked, proportional to its value (in other words, value divided by the sum of all values) and
+     * then picks one.
+     */
     public static final int ROULETTESELECTION = 0;
+
+    /**
+     * Uses the segment approach in the crossover phase. The segment approach chooses a random gene N between 1 and L
+     * (L being the length of the chromosome) and passes the father's genes from 1 to N and the mother's N to L genes
+     * to the offspring.
+     */
     public static final int SEGMENTCROSSOVER = 2;
+
+    /**
+     * Uses the uniform approach in the crossover phase. In the uniform approach, given a probability P, for each gene N,
+     * the father has P chances of passing its Nth gene to the offspring, with the mother having 1-P chances of passing
+     * the aforementioned gene.
+     */
     public static final int UNIFORMCROSSOVER = 0;
+
+    /**
+     * Uses the roulette approach in the crossover phase. In the roulette approach, for each gene N, the father has
+     * F/(F+M) chances of passing down its N gene, whereas the mother has M/(F+M) chances of passing down its N gene,
+     * F and M being the father and mother's value, respectively.
+     */
     public static final int ROULETTECROSSOVER = 4;
+
+    /**
+     * Uses elitism. Elitism consists in keeping the N best chromosomes for the next generation.
+     */
     public static final int ELITISM = 8;
 
-    List<Chromosome> chromosomes;
 
-    int selectionType;
-    int crossoverType;
+    /**
+    * The current population.
+    */
+    private List<Chromosome> chromosomes;
 
-    int tournamentSize;
-    int elitismSize = 0;
-    double uniformRate;
-    double mutationRate = 0.01;
+    /**
+     * The algorithm being used for the selection phase.
+     */
+    private int selectionType;
 
+    /**
+     * The algorithm being used for the crossover phase.
+     */
+    private int crossoverType;
+
+    /**
+     * The size of the tournament. When the tournament algorithm is selected for selection, this determines how many
+     * individuals will be placed in the tournament. Defaults to populationSize / 4.
+     */
+    private int tournamentSize;
+
+    /**
+     * The number of individuals to keep for the next generation, should elitism be in use. Defaults to 1 in that case.
+     */
+    private int elitismSize = 0;
+
+    /**
+     * The probability of the father passing its gene down to the offspring instead of the mother in the uniform
+     * crossover algorithm. Defaults to 0.5.
+     */
+    private double uniformRate;
+
+    /**
+     * The mutation rate after the creation of a new generation. Defaults to 0.01.
+     */
+    private double mutationRate = 0.01;
+
+    /**
+     * The Genetic Algorithm constructor.
+     * @param chromosomeLength The length in genes of each chromosome.
+     * @param initialPopulation The population length.
+     * @param settings Settings. Define the crossover and selection algorithms to use, as well as the use of elitism,
+     *                 in this parameter. Defaults to roulette selection, uniform crossover, and no elitism. To define
+     *                 them, just use bitwise or with the symbolic constans provided.
+     *                 E.g.: GeneticAlgorithm.UNIFORMCROSSOVER|GeneticAlgorithm.TOURNAMENTSELECTION|GeneticAlgorithm.ELITISM
+     */
     public GeneticAlgorithm(int chromosomeLength, int initialPopulation, int settings){
         chromosomes = new ArrayList<>();
         for(int c = 0; c < initialPopulation; ++c){
@@ -54,6 +135,10 @@ public abstract class GeneticAlgorithm {
             elitismSize = 1;
     }
 
+    /**
+     * Run the algorithm.
+     * @return When the algorithm ends, the best chromosome.
+     */
     public Chromosome run(){
         int iterations = 0;
         double averageValue = getAverageValue();
@@ -72,6 +157,10 @@ public abstract class GeneticAlgorithm {
             }
     }
 
+    /**
+     * Gets the average value of the population.
+     * @return The average value.
+     */
     private double getAverageValue() {
         double averageValue = 0;
         for (Chromosome chromosome : chromosomes) {
@@ -81,25 +170,60 @@ public abstract class GeneticAlgorithm {
         return averageValue;
     }
 
+    /**
+     * The evaluate function used to assign a value to a chromosome. Abstract function.
+     * @param chromosome Chromosome to assign a value.
+     * @return The value of the chromosome.
+     */
     public abstract double evaluate(Chromosome chromosome);
+
+    /**
+     * The stop condition for the algorithm. Abstract method.
+     * @param iterations The current number of iterations.
+     * @param bestChromosome The current best chromosome.
+     * @return True if the stop condition has already been met, false otherwise.
+     */
     public abstract boolean stopCondition(int iterations, Chromosome bestChromosome);
 
+    /**
+     * The size of the tournament. When the tournament algorithm is selected for selection, this determines how many
+     * individuals will be placed in the tournament. Defaults to populationSize / 4.
+     * @param tournamentSize The tournament size.
+     */
     public void setTournamentSize(int tournamentSize){
         this.tournamentSize = tournamentSize;
     }
 
+    /**
+     * The number of individuals to keep for the next generation, should elitism be in use. Defaults to 1 in that case.
+     * @param elitismSize The number of individuals to keep.
+     */
     public void setElitismSize(int elitismSize){
         this.elitismSize = elitismSize;
     }
 
+    /**
+     * The probability of the father passing its gene down to the offspring instead of the mother in the uniform
+     * crossover algorithm. Defaults to 0.5.
+     * @param uniformRate The uniform rate.
+     */
     public void setUniformRate(double uniformRate){
         this.uniformRate = uniformRate;
     }
 
+    /**
+     * The mutation rate after the creation of a new generation. Defaults to 0.01.
+     * @param mutationRate The mutation rate.
+     */
     public void setMutationRate(double mutationRate){
         this.mutationRate = mutationRate;
     }
 
+    /**
+     * Deals with the pairing and crossover phases. Chooses two parents and generates an offspring using the specified
+     * algorithms.
+     * @return The offspring.
+     */
     private Chromosome pairingAndCrossover(){
         Chromosome father, mother;
 
@@ -151,6 +275,9 @@ public abstract class GeneticAlgorithm {
         return offspring;
     }
 
+    /**
+     * Takes care of the creation of the next generation.
+     */
     private void breeding(){
         List<Chromosome> newChromosomes = new ArrayList<>();
 
@@ -168,11 +295,18 @@ public abstract class GeneticAlgorithm {
         chromosomes = newChromosomes;
     }
 
+    /**
+     * Evaluates all the new chromosomes after the mutation phase is over or the initial population is created.
+     */
     private void evaluation(){
         for(Chromosome chromosome : chromosomes)
             chromosome.setValue(evaluate(chromosome));
     }
 
+    /**
+     * When all the new chromosomes are created, goes through each gene of each one and has a P chance of flipping them,
+     * P being the mutation rate.
+     */
     private void mutation(){
         for (Chromosome chromosome : chromosomes) {
             for (int j = 0; j < chromosome.size(); ++j) {
@@ -182,6 +316,10 @@ public abstract class GeneticAlgorithm {
         }
     }
 
+    /**
+     * Returns the best chromosome from the current generation.
+     * @return The best chromosome.
+     */
     private Chromosome getBestChromosome() {
         double bestChromosomeValue = 0;
         Chromosome bestChromosome = null;
@@ -196,6 +334,10 @@ public abstract class GeneticAlgorithm {
         return bestChromosome;
     }
 
+    /**
+     * Handles the choosing of a chromosome in the tournament selection algorithm.
+     * @return The chosen chromosome.
+     */
     private Chromosome tournamentSelection() {
         List<Chromosome> tournamentChromosomes = new ArrayList<>();
 
@@ -217,6 +359,10 @@ public abstract class GeneticAlgorithm {
         return tournamentChromosomes.get(bestChromosome);
     }
 
+    /**
+     * Handles the choosing of a chromosome in the roulette selection algorithm.
+     * @return The chosen chromosome.
+     */
     private Chromosome rouletteSelection() {
         int totalValue = 0;
         int currentValue = 0;

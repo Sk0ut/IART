@@ -13,16 +13,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by up201304205 on 01-03-2016.
+ * Extracts the name, population, longitude and latitude of each Portuguese county.
  */
 public class CityParser {
+    /**
+     * The URL to get the county names and populations.
+     */
     private final static String citiesUrl = "https://pt.wikipedia.org/wiki/Lista_de_municípios_de_Portugal_por_população";
-    /* This is my Google Maps Geocoding API Key. YOU ARE PROHIBITED TO USE THIS IN ANY WAY OTHER THAN IN THE CONTEXT
-     * OF THIS APPLICATION. */
+    /**
+     * This is my Google Maps Geocoding API Key. YOU ARE PROHIBITED TO USE THIS IN ANY WAY OTHER THAN IN THE CONTEXT
+     * OF THIS APPLICATION.
+     */
     private final static String googleApiKey = "AIzaSyDz40hA-iPh957WG8FXY1G6jMOxgKHTAzI";
 
+    /**
+     * List with all the cities.
+     */
     private List<City> cities = new ArrayList<>();
+
+    /**
+     * String to save the html of the page with the names and population.
+     */
     private String html;
+
+    /**
+     * Returns all the cities with all the information filled.
+     * @param fileName file to save / read the information.
+     * @return List with all the information.
+     */
 
     public List<City> getCities(String fileName){
         File f = new File(fileName);
@@ -38,6 +56,9 @@ public class CityParser {
         return cities;
     }
 
+    /**
+     * Get the coords of each city from the Google Maps API.
+     */
     private void parseCoords() {
         String json;
         try {
@@ -57,6 +78,11 @@ public class CityParser {
         }
     }
 
+    /**
+     * Parses the JSON provided by the Google Maps API, extracting the latitude and longitude.
+     * @param json The JSON with the info.
+     * @return The latitude and longitude of the city.
+     */
     private Coord getLatLong(String json) {
         JSONObject obj = new JSONObject(json);
         JSONObject results = (JSONObject) obj.getJSONArray("results").get(0);
@@ -65,6 +91,12 @@ public class CityParser {
         return new Coord(location.getDouble("lat"), location.getDouble("lng"));
     }
 
+    /**
+     * Queries the Google Maps API for the latitude / longitude information for a city.
+     * @param city The city to get the info from.
+     * @return The JSON.
+     * @throws IOException Never happens. Come on, this is a high-level language. Please.
+     */
     private String extractCityJson(City city) throws IOException {
         String cityName = URLEncoder.encode(city.getName(), "utf-8");
         URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=" + cityName +
@@ -78,6 +110,9 @@ public class CityParser {
         return sb.toString();
     }
 
+    /**
+     * Parses the city names and populations from the html string.
+     */
     private void parseCities() {
         Document doc = Jsoup.parse(html);
         Elements citiesHtml = doc.getElementsByAttributeValue("style", "text-align: center;");
@@ -91,6 +126,11 @@ public class CityParser {
         System.out.println("Finished extracting city names and populations");
     }
 
+    /**
+     * Converts the information about a city's population to an integer.
+     * @param population Population as a string.
+     * @return Population as an integer.
+     */
     private int parsePopulation(String population){
         String ret = "";
 
@@ -101,6 +141,9 @@ public class CityParser {
         return Integer.parseInt(ret);
     }
 
+    /**
+     * Extracts the HTML from the URL provided in citiesURL.
+     */
     private void extractHtml() {
         try {
             URL url = new URL(citiesUrl);
@@ -116,6 +159,10 @@ public class CityParser {
         }
     }
 
+    /**
+     * Serializes the city information.
+     * @param fileName Name of the file to serialize the info to.
+     */
     private void serializeCities(String fileName) {
         try {
             FileOutputStream fileOut = new FileOutputStream(fileName);
@@ -128,6 +175,11 @@ public class CityParser {
         }
     }
 
+    /**
+     * Unserializes the city information.
+     * @param fileName Name of the file to unserialize the info from.
+     * @return List with the cities.
+     */
     private List<City> unserializeCities(String fileName) {
         List<City> cities;
         try {
@@ -143,10 +195,25 @@ public class CityParser {
         return cities;
     }
 
+    /**
+     * Holds the latitude and longitude for a city.
+     */
     public class Coord {
+        /**
+         * Latitude.
+         */
         private double latitude;
+
+        /**
+         * Longitude.
+         */
         private double longitude;
 
+        /**
+         * Coord constructor.
+         * @param latitude Latitude.
+         * @param longitude Longitude.
+         */
         public Coord(double latitude, double longitude) {
             this.latitude = latitude;
             this.longitude = longitude;
