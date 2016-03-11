@@ -1,5 +1,6 @@
 import cityparser.City;
 import cityparser.CityParser;
+import genetic.Chromosome;
 
 import java.util.List;
 
@@ -12,9 +13,13 @@ public class Main {
     public static void main (String args[]) {
         CityParser parser = new CityParser();
         List<City> cities = parser.getCities(fileName);
-        if (cities != null) {
+        /*if (cities != null) {
             cities.forEach(System.out::println);
             System.out.println("Nº total de concelhos: " + cities.size());
-        }
+        }*/
+        GeneticAlgorithmTest ga = new GeneticAlgorithmTest();
+        Chromosome bestChromosome = ga.run();
+        System.out.println("Solution: " + bestChromosome);
+        System.out.println("Value: " + bestChromosome.getValue());
     }
 }
