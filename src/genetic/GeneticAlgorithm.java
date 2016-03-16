@@ -12,7 +12,7 @@ import java.util.Random;
  * The algorithm consists in several steps:
  * 1- Randomize an initial population with size N.
  * 2- Select two parents to pass down their genes (selection phase).
- * 3- Pass genes from both parents to an offspring (crossover phase).
+ * 3- Pass genes from both parents to one offspring (crossover phase).
  * 4- Each gene from each offspring has a small chance of being mutated. Go through each gene and mutate it according to
  * the given probability.
  * 5- Check if the end condition applies. If not, return to step 2.
@@ -151,8 +151,8 @@ public abstract class GeneticAlgorithm {
 
         while(true){
             breeding();
-            evaluation();
             mutation();
+            evaluation();
 
             averageValue = getAverageValue();
             ++iterations;
