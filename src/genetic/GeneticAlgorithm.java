@@ -97,6 +97,11 @@ public abstract class GeneticAlgorithm {
     private double mutationRate = 0.01;
 
     /**
+     * The probabilities list used for the roulette pairing method.
+     */
+    List<Double> probabilities = null;
+
+    /**
      * The Genetic Algorithm constructor.
      * @param chromosomeLength The length in genes of each chromosome.
      * @param initialPopulation The population length.
@@ -288,10 +293,14 @@ public abstract class GeneticAlgorithm {
             }
         }
 
+        if(selectionType == ROULETTESELECTION)
+            populateProbabilities();
+
         for(int i = elitismSize; i < chromosomes.size(); ++i){
             newChromosomes.add(pairingAndCrossover());
         }
 
+        probabilities = null;
         chromosomes = newChromosomes;
     }
 
@@ -364,16 +373,6 @@ public abstract class GeneticAlgorithm {
      * @return The chosen chromosome.
      */
     private Chromosome rouletteSelection() {
-        int totalValue = 0;
-        int currentValue = 0;
-        List<Double> probabilities = new ArrayList<>();
-        for(Chromosome chromosome : chromosomes){
-            totalValue += chromosome.getValue();
-        }
-        for(Chromosome chromosome : chromosomes){
-            probabilities.add((chromosome.getValue() + currentValue)/totalValue);
-            currentValue += chromosome.getValue();
-        }
         float prob = new Random().nextFloat();
 
         int i = 0;
@@ -384,5 +383,22 @@ public abstract class GeneticAlgorithm {
         }
 
         return chromosomes.get(i);
+    }
+
+    /**
+     * Fills the probabilities list with the appropriate values in the roulette selection method.
+     */
+    private void populateProbabilities() {
+        int totalValue = 0;
+        int currentValue = 0;
+
+        probabilities = new ArrayList<>();
+        for(Chromosome chromosome : chromosomes){
+            totalValue += chromosome.getValue();
+        }
+        for(Chromosome chromosome : chromosomes){
+            probabilities.add((chromosome.getValue() + currentValue)/totalValue);
+            currentValue += chromosome.getValue();
+        }
     }
 }
