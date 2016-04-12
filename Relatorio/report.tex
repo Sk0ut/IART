@@ -1,0 +1,175 @@
+\documentclass[11pt,a4paper,reqno]{article}
+\linespread{1.5}
+
+\usepackage[active]{srcltx}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{amsthm,amsfonts,amsmath,amssymb,indentfirst,mathrsfs,amscd}
+\usepackage[mathscr]{eucal}
+\usepackage[active]{srcltx} %inverse search
+\usepackage{tensor}
+\usepackage[utf8x]{inputenc}
+\usepackage[portuges]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\setlist{nolistsep}
+\usepackage{comment} 
+\usepackage{tikz}
+\usepackage[numbers,square, comma, sort&compress]{natbib}
+\usepackage[nottoc,numbib]{tocbibind}
+%\numberwithin{figure}{section}
+\numberwithin{equation}{section}
+\usepackage{scalefnt}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+%\usepackage{tweaklist}
+%\renewcommand{\itemhook}{\setlength{\topsep}{0pt}%
+%	\setlength{\itemsep}{0pt}}
+%\renewcommand{\enumhook}{\setlength{\topsep}{0pt}%
+%	\setlength{\itemsep}{0pt}}
+%\usepackage[colorlinks]{hyperref}
+\usepackage{MnSymbol}
+%\usepackage[pdfpagelabels,pagebackref,hypertexnames=true,plainpages=false,naturalnames]{hyperref}
+\usepackage[naturalnames]{hyperref}
+\usepackage{enumitem}
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+	\posttitle{%
+	\par\end{center}
+	\begin{center}\large#1\end{center}
+	\vskip0.5em}%
+}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\usepackage{caption}
+\usepackage{etoolbox}% http://ctan.org/pkg/etoolbox
+\usepackage{complexity}
+
+\usepackage[official]{eurosym}
+
+\def\Cpp{C\raisebox{0.5ex}{\tiny\textbf{++}}}
+
+\makeatletter
+\def\@makechapterhead#1{%
+  %%%%\vspace*{50\p@}% %%% removed!
+  {\parindent \z@ \raggedright \normalfont
+    \ifnum \c@secnumdepth >\m@ne
+        \huge\bfseries \@chapapp\space \thechapter
+        \par\nobreak
+        \vskip 20\p@
+    \fi
+    \interlinepenalty\@M
+    \Huge \bfseries #1\par\nobreak
+    \vskip 40\p@
+  }}
+\def\@makeschapterhead#1{%
+  %%%%%\vspace*{50\p@}% %%% removed!
+  {\parindent \z@ \raggedright
+    \normalfont
+    \interlinepenalty\@M
+    \Huge \bfseries  #1\par\nobreak
+    \vskip 40\p@
+  }}
+\makeatother
+
+\usepackage[toc,page]{appendix}
+
+\addto\captionsportuges{%
+  \renewcommand\appendixname{Anexo}
+  \renewcommand\appendixpagename{Anexos}
+}
+
+\addto\captionsportuges{%
+  \renewcommand\abstractname{Sumário}
+}
+
+\begin{document}
+
+
+
+\begin{titlepage}
+\begin{center}
+
+{\large 3º ano do Mestrado Integrado em Engenharia Informática e Computação \\[5mm]}
+{\Large Inteligência Artificial}\\[2cm]
+
+% Title
+{\Huge \bfseries Otimização da Localização de Tribunais em Portugal \\[5mm]}
+{\large \textit{Relatório Intecalar} \\[2cm]}
+
+\includegraphics[width=12.5cm]{feup_logo.jpg}\\[2cm]
+
+% Author
+{\large Flávio Couto - up201303726 - up201303726@fe.up.pt\\[1mm]}
+{\large Luís Figueiredo - up201304295 - up201304295@fe.up.pt \\[1mm]}
+{\large Pedro Afonso Castro - up201304205 - up201304205@fe.up.pt\\[1mm]}
+
+
+% Bottom of the page
+{\large \today}
+
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+
+%%%%%%%%%%%%%%
+%  OBJETIVO  %
+%%%%%%%%%%%%%%
+\section{Objetivo}
+
+O objetivo do trabalho é distribuir de uma maneira eficiente um número fixo de tribunais pelos concelhos do país, sendo o número de tribunais substancialmente inferior ao de concelhos, recorrendo a métodos de pesquisa de soluções para problemas de otimização como algoritmos genéticos e arrefecimento simulado. 
+
+
+%%%%%%%%%%%%%
+% DESCRIÇÃO %
+%%%%%%%%%%%%%
+\section{Descrição}
+\subsection{Especificação}
+
+Dada a natureza dos algoritmos de otimização, é necessário encontrar uma função de avaliação que nos permita determinar a qualidade de uma solução. Para determinar a distribuição ideal dos tribunais, temos então de determinar os fatores que nos permitam considerar uma solução como ótima. Posto isto, podemos enumerar os seguintes fatores:
+
+\begin{itemize}
+\item O número de cidadãos residentes em concelhos onde sejam colocados tribunais deve ser o maior possível;
+\item A distância a um tribunal dos cidadãos residentes em concelhos onde não exista um tribunal deve ser a menor possível;
+\item Nenhum cidadão deverá ficar a uma distância superior a X de um tribunal.
+\end{itemize}
+
+No entanto, encontrar estes fatores não é suficiente. Precisamos de uma forma de representar cada possível solução. O grupo optou por usar uma representação baseada numa cadeia binária (de 0's e 1's), com tamanho igual ao número de concelhos, em que um 0 na posição i representa a inexistência de um tribunal no concelho i, e um 1 representa a existência de um tribunal nesse concelho.
+
+Estamos então em condições de determinar uma função de avaliação para o problema em questão. A seguinte função de avaliação será utilizada:
+
+f(x) = $\sum\limits_{i=1}^{n}\
+	\begin{cases} 
+		nCidadaos[i] \mbox{ se } s[i] = 1\\
+		\begin{cases}
+		min(dist(i,x)) \mbox{ em que }  $\{ $x$ \mid x \in cities, s[x] = 1 \}$ \mbox{ se } s[i] = 0\\
+		0 \mbox{ se } max(dist(i,x)) > maxDist \mbox{ em que }$ \{ $x$ \mid x \in cities, s[x] = 1 \}$
+		\end{cases}
+	\end{cases}
+	
+Em que nCidadaos representa uma lista com os cidadãos das cidades, s representa a cadeira referida anteriormente, cities representa uma lista de todas as cidades e maxDist a distância máxima a que um cidadão pode ficar de um tribunal.
+\newline
+
+O grupo resolveu dividir o trabalho nas seguintes fases:
+\begin{itemize}
+\item Extracção do nome, população e coordenadas geográficas de cada sede de concelho em Portugal;
+\item Implementação genérica de um algoritmo genético (ou seja, uma implementação que se consiga aplicar a qualquer problema que possa ser resolvido recorrendo a este algoritmo);
+\item Implementação genérica de arrefecimento simulado;
+\item Determinação da função de avaliação e forma de representação a ser utilizada nos algoritmos de optimização implementados;
+\item Criação de uma interface gráfica que permita ao utilizador encontrar uma solução para o problema de forma simples e intuitiva;
+\item Implementação de melhorias não especificadas no enunciado que o grupo entenda, caso haja disponibilidade (como por exemplo, a utilização de outros algoritmos de otimização).
+\end{itemize}
+
+
+\subsection{Trabalho realizado}
+Na altura da entrega deste relatório, o grupo já extraiu informações realistas do nome, população e localização de cada sede de concelho em Portugal.
+
+O grupo também já terminou a implementação genérica de um algoritmo genético, bem como a determinação da função de avaliação e forma de representação de cada possível solução.
+
+
+%%%%%%%%%%%%%%%%
+% BIBLIOGRAPHY %
+%%%%%%%%%%%%%%%%
+\bibliographystyle{IEEEtran}
+\bibliography{rabb,refs}
+
+\end{document}
