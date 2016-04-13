@@ -122,8 +122,8 @@ O objetivo do trabalho é distribuir de uma maneira eficiente um número fixo de
 %%%%%%%%%%%%%
 % DESCRIÇÃO %
 %%%%%%%%%%%%%
-\section{Descrição}
-\subsection{Especificação}
+\section{Descrição} 
+\subsection{Especificação} \label{introduction}
 
 Dada a natureza dos algoritmos de otimização, é necessário encontrar uma função de avaliação que nos permita determinar a qualidade de uma solução. Para determinar a distribuição ideal dos tribunais, temos então de determinar os fatores que nos permitam considerar uma solução como ótima. Posto isto, podemos enumerar os seguintes fatores:
 
@@ -131,23 +131,23 @@ Dada a natureza dos algoritmos de otimização, é necessário encontrar uma fun
 \item O número de cidadãos residentes em concelhos onde sejam colocados tribunais deve ser o maior possível;
 \item A distância a um tribunal dos cidadãos residentes em concelhos onde não exista um tribunal deve ser a menor possível;
 \item Nenhum cidadão deverá ficar a uma distância superior a X de um tribunal.
+\item Os custos de construção dos tribunais deverão ser os menores possíveis.
 \end{itemize}
 
 No entanto, encontrar estes fatores não é suficiente. Precisamos de uma forma de representar cada possível solução. O grupo optou por usar uma representação baseada numa cadeia binária (de 0's e 1's), com tamanho igual ao número de concelhos, em que um 0 na posição i representa a inexistência de um tribunal no concelho i, e um 1 representa a existência de um tribunal nesse concelho.
 
 Estamos então em condições de determinar uma função de avaliação para o problema em questão. A seguinte função de avaliação será utilizada:
 
-f(x) = $\sum\limits_{i=1}^{n}\
+h(n) = $\begin{cases} 
+    \sum\limits_{i=1}^{n}\
 	\begin{cases} 
-		nCidadaos[i] \mbox{ se } s[i] = 1\\
-		\begin{cases}
-		min(dist(i,x)) \mbox{ em que }  $\{ $x$ \mid x \in cities, s[x] = 1 \}$ \mbox{ se } s[i] = 0\\
-		0 \mbox{ se } max(dist(i,x)) > maxDist \mbox{ em que }$ \{ $x$ \mid x \in cities, s[x] = 1 \}$
-		\end{cases}
-	\end{cases}
+		\frac {nCidadaos[i]}{custoConst[i]} \mbox{ se } s[i] = 1\\
+		min(dist(i,x)) \mbox{ em que }  \{ x \mid x \in cities, s[x] = 1 \} \mbox{ se } s[i] = 0\\
+	\end{cases}\\
+	0 \mbox{ se } max(dist(i,x)) > maxDist \mbox{ em que } \{ x \mid x \in cities, s[x] = 1 \}
+	\end{cases}$\\
 	
-Em que nCidadaos representa uma lista com os cidadãos das cidades, s representa a cadeira referida anteriormente, cities representa uma lista de todas as cidades e maxDist a distância máxima a que um cidadão pode ficar de um tribunal.
-\newline
+Em que \textit{n} representa o número total de cidades, \textit{nCidadaos} representa uma lista com os cidadãos das cidades, \textit{custoCont} representa o custo de construção de um tribunal nessa cidade, \textit{s} representa a cadeira referida anteriormente, \textit{cities} representa uma lista de todas as cidades e \textit{maxDist} a distância máxima a que um cidadão pode ficar de um tribunal.\\
 
 O grupo resolveu dividir o trabalho nas seguintes fases:
 \begin{itemize}
@@ -165,11 +165,37 @@ Na altura da entrega deste relatório, o grupo já extraiu informações realist
 
 O grupo também já terminou a implementação genérica de um algoritmo genético, bem como a determinação da função de avaliação e forma de representação de cada possível solução.
 
+\subsection{Resultados esperados e forma de avaliação}
+Como já foi especificado anteriormente, para avaliar a qualidade de uma solução, a função heurística \textit{h(n)} especificada anteriormente será utilizada. Esta função será também usada para avaliar a qualidade da solução final gerada pelo algoritmo utilizado, permitindo a sua validação.
+
+Sempre que uma solução for gerada, serão também utilizados testes para garantir que as restrições do problema são cumpridas (como por exemplo, a maior distância entre um cidadão e um tribunal ser inferior à fornecida pelo utilizador). Em caso negativo, uma nova solução será gerada.
+
+
+%%%%%%%%%%%%%
+% CONCLUSÃO %
+%%%%%%%%%%%%%
+
+\section{Conclusão}
+Após reflexão entre os membros do grupo acerca do tema escolhido, não só quando começámos a trabalhar neste, como para fazer este relatório intercalar, chegámos à conclusão que fizemos uma boa escolha no tema do projeto. É um projeto bastante interessante, que sendo desafiante não é demasiado trabalhoso (o que condicionaria o nosso tempo para outras unidades curriculares).
+
+Pensar na forma mais correta de implementar os algoritmos, bem como encontrar a função de avaliação mais adequada foram os aspetos mais interessantes do desenvolvimento do projeto até agora, e estamos motivados para fazer o melhor trabalho possível nas semanas que faltam.
+
+Está a ser definitivamente um dos trabalhos mais cativantes do semestre, e esperamos gostar tanto de trabalhar nele a partir de agora como gostámos até aqui.
 
 %%%%%%%%%%%%%%%%
 % BIBLIOGRAPHY %
 %%%%%%%%%%%%%%%%
-\bibliographystyle{IEEEtran}
-\bibliography{rabb,refs}
+\section{Recursos utilizados}
+
+\begin{itemize}
+\item Apontamentos das aulas
+\item MILLER, Brad L. & GOLDBERG David E. Genetic Algorithms, Tournament Selection, and the Effects of Noise
+\item Creating a genetic algorithm for begginers (http://www.theprojectspot.com/tutorial-post/creating-a-genetic-algorithm-for-beginners/3)
+\item IntelliJ IDEA (https://www.jetbrains.com/idea/)
+\item TeXmaker (http://www.xm1math.net/texmaker/)
+\item LaTeX(https://www.latex-project.org/)
+\item Git (https://git-scm.com/)
+
+\end{itemize}
 
 \end{document}
