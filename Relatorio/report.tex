@@ -112,17 +112,24 @@
 
 \tableofcontents
 
+
 %%%%%%%%%%%%%%
 %  OBJETIVO  %
 %%%%%%%%%%%%%%
+
+\newpage
+
 \section{Objetivo}
 
-O objetivo do trabalho é distribuir de uma maneira eficiente um número fixo de tribunais pelos concelhos do país, sendo o número de tribunais substancialmente inferior ao de concelhos, recorrendo a métodos de pesquisa de soluções para problemas de otimização como algoritmos genéticos e arrefecimento simulado. 
+Este projeto encpntra-se a ser desenvolvido no âmbito da unidade curricular de Inteligência Artificial (IART) e tem como principal objetivo realizar um estudo sobre algoritmos de otimização de soluções. Mais concretamente será abordada a otimização do mapa judiciário português, isto é, a distribuição de um número fixo de tribunais pelos concelhos do país. Sendo o número de tribunais substancialmente inferior ao de concelhos, recorreremos a metodologias de otimização de soluções como algoritmos genéticos e arrefecimento simulado para atingirmos ao objetivo. 
 
 
 %%%%%%%%%%%%%
 % DESCRIÇÃO %
 %%%%%%%%%%%%%
+
+\newpage
+
 \section{Descrição} 
 \subsection{Especificação} \label{introduction}
 
@@ -139,16 +146,33 @@ No entanto, encontrar estes fatores não é suficiente. Precisamos de uma forma 
 
 Estamos então em condições de determinar uma função de avaliação para o problema em questão. A seguinte função de avaliação será utilizada:
 
-h(n) = $\begin{cases} 
-    \sum\limits_{i=1}^{n}\
-	\begin{cases} 
-		\frac {nCidadaos[i]}{custoConst[i]} \mbox{ se } s[i] = 1\\
-		min(dist(i,x)) \mbox{ em que }  \{ x \mid x \in cities, s[x] = 1 \} \mbox{ se } s[i] = 0\\
+\begin{equation}
+    H = \sum\limits_{i}\ h(i) + C_p * \sum\limits_{i} P[i]
+\end{equation}
+
+\begin{equation}    
+h(i) = \begin{cases} 
+    P[i] * V_p - C[i] ,\  se \  X[i] = 1 \\
+    P[i] * V_p * \frac{D\textsubscript{max} - min(D(i, j))}{D\textsubscript{max}}, \ se \ j \neq i \  \wedge \ X[i] = 0 \ \wedge X[j] = 1 \  \wedge D(i, j) < D\textsubscript{max} \\
+    -P[i] * C_p,\  se \ X[i] = 0 \ \wedge \ \forall _j \ \{(j \neq i \ \wedge \  X[j] = 1) \implies D(i, j) > D\textsubscript{max}\} \\
 	\end{cases}\\
-	0 \mbox{ se } max(dist(i,x)) > maxDist \mbox{ em que } \{ x \mid x \in cities, s[x] = 1 \}
-	\end{cases}$\\
+\end{equation}
 	
-Em que \textit{n} representa o número total de cidades, \textit{nCidadaos} representa uma lista com os cidadãos das cidades, \textit{custoCont} representa o custo de construção de um tribunal nessa cidade, \textit{s} representa a cadeira referida anteriormente, \textit{cities} representa uma lista de todas as cidades e \textit{maxDist} a distância máxima a que um cidadão pode ficar de um tribunal.\\
+	
+Em que:
+\begin{itemize}
+\item $P[i]$ representa o número de pessoas da cidade $i$;
+\item $V_p$ representa o valor de uma pessoa ter acesso a um tribunal perto dela;
+\item $C_p$ representa o custo de uma pessoa não ter acesso a um tribunal perto dela;
+\item $C_t [i]$ representa o custo de construir um tribunal na cidade $i$;
+\item $X[i]$ representa a existência (1) ou não (0) de um tribunal na cidade $i$;
+\item $D\textsubscript{max}$ representa a distância máxima desejada de uma cidade a um tribunal;
+\item $D(i, j)$ representa a distância entre as cidades $i$ e $j$;
+\end{itemize} 
+
+\ 
+
+De forma a tornar esta aplicação o mais realista possível, consideramos desenvolver um módulo que obtenha dados relativos às cidades e sua distribuição pelo país através de fontes fiáveis, nomeadamente a \textit{API} da \textit{Google Maps}. 
 
 O grupo resolveu dividir o trabalho nas seguintes fases:
 \begin{itemize}
@@ -176,8 +200,10 @@ Sempre que uma solução for gerada, serão também utilizados testes para garan
 % CONCLUSÃO %
 %%%%%%%%%%%%%
 
+\newpage
+
 \section{Conclusão}
-Após reflexão entre os membros do grupo acerca do tema escolhido, não só quando começámos a trabalhar neste, como para fazer este relatório intercalar, chegámos à conclusão que fizemos uma boa escolha no tema do projeto. É um projeto bastante interessante, que sendo desafiante não é demasiado trabalhoso (o que condicionaria o nosso tempo para outras unidades curriculares).
+Após reflexão entre os membros do grupo acerca do tema escolhido, não só quando começámos a trabalhar neste, como também na produção deste relatório intercalar, chegámos à conclusão que fizemos uma boa escolha do tema do projeto. É um projeto bastante interessante que, sendo desafiante, não é demasiado trabalhoso (o que condicionaria o nosso tempo para outras unidades curriculares).
 
 Pensar na forma mais correta de implementar os algoritmos, bem como encontrar a função de avaliação mais adequada foram os aspetos mais interessantes do desenvolvimento do projeto até agora, e estamos motivados para fazer o melhor trabalho possível nas semanas que faltam.
 
@@ -186,12 +212,15 @@ Está a ser definitivamente um dos trabalhos mais cativantes do semestre, e espe
 %%%%%%%%%%%%%%%%
 % BIBLIOGRAPHY %
 %%%%%%%%%%%%%%%%
+
+\newpage
+
 \section{Recursos utilizados}
 
 \begin{itemize}
 \item Apontamentos das aulas
-\item MILLER, Brad L. & GOLDBERG David E. Genetic Algorithms, Tournament Selection, and the Effects of Noise
-\item Creating a genetic algorithm for begginers (http://www.theprojectspot.com/tutorial-post/creating-a-genetic-algorithm-for-beginners/3)
+\item MILLER, Brad L. and GOLDBERG David E. Genetic Algorithms, Tournament Selection, and the Effects of Noise
+\item Creating a genetic algorithm for beginners (http://www.theprojectspot.com/tutorial-post/creating-a-genetic-algorithm-for-beginners/3)
 \item IntelliJ IDEA (https://www.jetbrains.com/idea/)
 \item TeXmaker (http://www.xm1math.net/texmaker/)
 \item LaTeX(https://www.latex-project.org/)
