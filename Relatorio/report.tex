@@ -153,19 +153,6 @@ Estamos então em condições de determinar uma função de avaliação para o p
     \end{cases}
 \end{equation}
 
-
-\begin{equation} % Problema: soluções válidas mas negativas serão descartadas, possibilidade de matança de todos os cromossomas
-    H1(X_i) = max(0, H(X_i))
-\end{equation}
-
-\begin{equation} % Problema: não há certezas em relação à escala da compensação: a diferença entre o pior cromossoma e o melhor pode ser minuscula
-    H2(X_i) = max(0, H(X_i) - \sum\limits_{j} min(P[j] * V_p - C[j], -P[j] * C_p))
-\end{equation}
-
-\begin{equation}
-    H3 = max(0, H(X_i) - min(0, min(\forall _j  (H(X_j)))))
-\end{equation}
-
 \begin{equation}    
 h(X_i) = \begin{cases} 
     P[j] * V_p - C[j] ,\  se \  X_i[j] = 1 \\
@@ -174,7 +161,7 @@ h(X_i) = \begin{cases}
 	\end{cases}\\
 \end{equation}
 	
-	
+\	
 Em que:
 \begin{itemize}
 \item $X_i$ representa o cromossoma número $i$ da geração atual;
@@ -190,6 +177,19 @@ Em que:
 \end{itemize} 
 
 \ 
+Para tornar possível a seleção de cromossomas para emparelhamento, serão consideradas diferentes adaptações da função de avaliação acima apresentada, cada uma com diferentes vantagens e desvantagens:
+
+\begin{equation} % Problema: soluções válidas mas negativas serão descartadas, possibilidade de matança de todos os cromossomas
+    H1(X_i) = max(0, H(X_i))
+\end{equation}
+
+\begin{equation} % Problema: não há certezas em relação à escala da compensação: a diferença entre o pior cromossoma e o melhor pode ser minuscula
+    H2(X_i) = max(0, H(X_i) - \sum\limits_{j} min(P[j] * V_p - C[j], -P[j] * C_p))
+\end{equation}
+
+\begin{equation}
+    H3 = max(0, H(X_i) - min(0, min(\forall _j  (H(X_j)))))
+\end{equation}
 
 De forma a tornar esta aplicação o mais realista possível, consideramos desenvolver um módulo que obtenha dados relativos às cidades e sua distribuição pelo país através de fontes fiáveis, nomeadamente a \textit{API} da \textit{Google Maps}. 
 
