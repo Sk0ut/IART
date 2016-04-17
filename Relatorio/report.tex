@@ -121,7 +121,7 @@
 
 \section{Objetivo}
 
-Este projeto encontra-se a ser desenvolvido no âmbito da unidade curricular de Inteligência Artificial (IART) e tem como principal objetivo realizar um estudo sobre algoritmos de otimização de soluções. Mais concretamente será abordada a otimização do mapa judiciário português, isto é, a distribuição de um número fixo de tribunais pelos concelhos do país. Sendo o número de tribunais substancialmente inferior ao de concelhos, recorreremos a metodologias de otimização de soluções como algoritmos genéticos e arrefecimento simulado para atingirmos ao objetivo. 
+Este projeto encpntra-se a ser desenvolvido no âmbito da unidade curricular de Inteligência Artificial (IART) e tem como principal objetivo realizar um estudo sobre algoritmos de otimização de soluções. Mais concretamente será abordada a otimização do mapa judiciário português, isto é, a distribuição de um número fixo de tribunais pelos concelhos do país. Sendo o número de tribunais substancialmente inferior ao de concelhos, recorreremos a metodologias de otimização de soluções como algoritmos genéticos e arrefecimento simulado para atingirmos ao objetivo. 
 
 
 %%%%%%%%%%%%%
@@ -147,32 +147,51 @@ No entanto, encontrar estes fatores não é suficiente. Precisamos de uma forma 
 Estamos então em condições de determinar uma função de avaliação para o problema em questão. A seguinte função de avaliação será utilizada:
 
 \begin{equation}
-    H = \sum\limits_{i}\ h(i) + C_p * \sum\limits_{i} P[i]
+    H(X_i) = \begin{cases}
+    -\infty ,\ se \sum\limits_{j}X_i[j]\ > T\textsubscript{max} \\
+    \sum\limits_{j}\ h(X_i[j]), \ se \sum\limits_{j}\ X_i[j] <= T\textsubscript{max}\\
+    \end{cases}
+\end{equation}
+
+
+\begin{equation} % Problema: soluções válidas mas negativas serão descartadas, possibilidade de matança de todos os cromossomas
+    H1(X_i) = max(0, H(X_i))
+\end{equation}
+
+\begin{equation} % Problema: não há certezas em relação à escala da compensação: a diferença entre o pior cromossoma e o melhor pode ser minuscula
+    H2(X_i) = max(0, H(X_i) - \sum\limits_{j} min(P[j] * V_p - C[j], -P[j] * C_p))
+\end{equation}
+
+\begin{equation}
+    H3 = max(0, H(X_i) - min(0, min(\forall _j  (H(X_j)))))
 \end{equation}
 
 \begin{equation}    
-h(i) = \begin{cases} 
-    P[i] * V_p - C[i] ,\  se \  X[i] = 1 \\
-    P[i] * V_p * \frac{D\textsubscript{max} - min(D(i, j))}{D\textsubscript{max}}, \ se \ j \neq i \  \wedge \ X[i] = 0 \ \wedge X[j] = 1 \  \wedge D(i, j) < D\textsubscript{max} \\
-    -P[i] * C_p,\  se \ X[i] = 0 \ \wedge \ \forall _j \ \{(j \neq i \ \wedge \  X[j] = 1) \implies D(i, j) > D\textsubscript{max}\} \\
+h(X_i) = \begin{cases} 
+    P[j] * V_p - C[j] ,\  se \  X_i[j] = 1 \\
+    P[j] * V_p * \frac{D\textsubscript{max} - min(D(j, k))}{D\textsubscript{max}}, \ se \ X_i[j] = 0 \ \wedge k \in L(j, D\textsubscript{max}) \ \wedge X_i[k] = 1 \\
+    -P[j] * C_p,\  se \ X_i[j] = 0 \ \wedge \ \forall _k \ (k \in L(j, D\textsubscript{max}) \ \implies \  X_i[k] = 0) \\
 	\end{cases}\\
 \end{equation}
 	
 	
 Em que:
 \begin{itemize}
-\item $P[i]$ representa o número de pessoas da cidade $i$;
+\item $X_i$ representa o cromossoma número $i$ da geração atual;
+\item $T\textsubscript{max}$ representa o número máximo de tribunais a distribuir
+\item $P[j]$ representa o número de pessoas da cidade $j$;
 \item $V_p$ representa o valor de uma pessoa ter acesso a um tribunal perto dela;
 \item $C_p$ representa o custo de uma pessoa não ter acesso a um tribunal perto dela;
-\item $C_t [i]$ representa o custo de construir um tribunal na cidade $i$;
-\item $X[i]$ representa a existência (1) ou não (0) de um tribunal na cidade $i$;
+\item $C_t[j]$ representa o custo de construir um tribunal na cidade $j$;
+\item $X_i[j]$ representa a existência (1) ou não (0) de um tribunal na cidade $i$;
 \item $D\textsubscript{max}$ representa a distância máxima desejada de uma cidade a um tribunal;
-\item $D(i, j)$ representa a distância entre as cidades $i$ e $j$;
+\item $D(j, k)$ representa a distância entre as cidades $j$ e $k$;
+\item $L(j, D\textsubscript{max})$ representa o conjunto das cidades que se encontram no máximo a $D\textsubscript{max}$ da cidade $j$, excluindo $j$;
 \end{itemize} 
 
 \ 
 
-De forma a tornar esta aplicação o mais realista possível, consideramos desenvolver um módulo que obtenha dados relativos às cidades e sua distribuição pelo país através de fontes fiáveis, nomeadamente a \textit{API} da \textit{Google Maps}.\\ 
+De forma a tornar esta aplicação o mais realista possível, consideramos desenvolver um módulo que obtenha dados relativos às cidades e sua distribuição pelo país através de fontes fiáveis, nomeadamente a \textit{API} da \textit{Google Maps}. 
 
 O grupo resolveu dividir o trabalho nas seguintes fases:
 \begin{itemize}
@@ -193,7 +212,7 @@ O grupo também já terminou a implementação genérica de um algoritmo genéti
 \subsection{Resultados esperados e forma de avaliação}
 Como já foi especificado anteriormente, para avaliar a qualidade de uma solução, a função heurística \textit{h(n)} especificada anteriormente será utilizada. Esta função será também usada para avaliar a qualidade da solução final gerada pelo algoritmo utilizado, permitindo a sua validação.
 
-Testes unitários serão também criados para garantir que cada algoritmo utilizado está a ter o comportamento esperado em cada uma das suas fases de execução.
+Sempre que uma solução for gerada, serão também utilizados testes para garantir que as restrições do problema são cumpridas (como por exemplo, a maior distância entre um cidadão e um tribunal ser inferior à fornecida pelo utilizador). Em caso negativo, uma nova solução será gerada.
 
 
 %%%%%%%%%%%%%
@@ -219,7 +238,7 @@ Está a ser definitivamente um dos trabalhos mais cativantes do semestre, e espe
 
 \begin{itemize}
 \item Apontamentos das aulas
-\item MILLER, Brad L. and David E. Goldberg. \textit{Genetic Algorithms, Tournament Selection, and the Effects of Noise}, University of Illinois, 1995
+\item MILLER, Brad L. and GOLDBERG David E. Genetic Algorithms, Tournament Selection, and the Effects of Noise
 \item Creating a genetic algorithm for beginners (http://www.theprojectspot.com/tutorial-post/creating-a-genetic-algorithm-for-beginners/3)
 \item IntelliJ IDEA (https://www.jetbrains.com/idea/)
 \item TeXmaker (http://www.xm1math.net/texmaker/)
