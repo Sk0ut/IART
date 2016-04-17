@@ -210,9 +210,13 @@ Na altura da entrega deste relatório, o grupo já extraiu informações realist
 O grupo também já terminou a implementação genérica de um algoritmo genético, bem como a determinação da função de avaliação e forma de representação de cada possível solução.
 
 \subsection{Resultados esperados e forma de avaliação}
+Para avaliar a qualidade dos algoritmos implementados, podemos focar-nos em dois aspetos: qualidade da solução e tempo de computação.
+
 Como já foi especificado anteriormente, para avaliar a qualidade de uma solução, a função heurística \textit{h(n)} especificada anteriormente será utilizada. Esta função será também usada para avaliar a qualidade da solução final gerada pelo algoritmo utilizado, permitindo a sua validação.
 
-Sempre que uma solução for gerada, serão também utilizados testes para garantir que as restrições do problema são cumpridas (como por exemplo, a maior distância entre um cidadão e um tribunal ser inferior à fornecida pelo utilizador). Em caso negativo, uma nova solução será gerada.
+Com isto, podemos avaliar a qualidade das soluções geradas pelos algoritmos, podendo assim ver qual é o mais eficiente. Gerando uma amostra estatisticamente representativa (30 soluções) para cada algoritmo e calculando a média do resultado da função de avaliação para cada amostra, poderemos assim ver qual dos algoritmos é mais eficaz para a resolução do problema.
+
+Para calcular o tempo de execução, basta determinar o tempo imediatamente antes e depois da execução do algoritmo, permitindo-nos assim saber qual dos algoritmos é que permite encontrar uma solução mais rapidamente.
 
 
 %%%%%%%%%%%%%
