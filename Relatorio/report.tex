@@ -183,13 +183,22 @@ Para tornar possível a seleção de cromossomas para emparelhamento, serão con
     H1(X_i) = max(0, H(X_i))
 \end{equation}
 
+\
+Esta função de avaliação descarta as soluções com mais tribunais que os permitidos e as soluções com avaliação negativa, apesar de respeitar o número máximo de tribunais.
+
 \begin{equation} % Problema: não há certezas em relação à escala da compensação: a diferença entre o pior cromossoma e o melhor pode ser minuscula
     H2(X_i) = max(0, H(X_i) - \sum\limits_{j} min(P[j] * V_p - C[j], -P[j] * C_p))
 \end{equation}
 
+\
+Esta função de avaliação apenas descarta as soluções com mais tribunais que os permitidos e a solução com o menor valor de avaliação possível de ser obtido, incrementando todos os valores da função de avaliação $H(X_i)$. No entanto, esta função pode dificultar a diferenciação entre soluções, caso a parcela de compensação tenha uma contribuição demasiado grande.
+
 \begin{equation}
-    H3 = max(0, H(X_i) - min(0, min(\forall _j  (H(X_j)))))
+    H3(X_i) = max(0, H(X_i) - min(0, min(\forall _j  (H(X_j)))))
 \end{equation}
+
+\
+Esta função de avaliação descarta as soluções com mais tribunais que os permitidos e a pior solução da geração atual. Isto permite reduzir o problema da contribuição apresentado para a função $H2(X_i)$, mas introduz um \textit{overhead} para determinação do menor valor de avaliação da geração atual.
 
 De forma a tornar esta aplicação o mais realista possível, consideramos desenvolver um módulo que obtenha dados relativos às cidades e sua distribuição pelo país através de fontes fiáveis, nomeadamente a \textit{API} da \textit{Google Maps}. 
 
