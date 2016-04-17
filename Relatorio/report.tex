@@ -149,12 +149,12 @@ Estamos então em condições de determinar uma função de avaliação para o p
 \begin{equation}
     H(X_i) = \begin{cases}
     -\infty ,\ se \sum\limits_{j}X_i[j]\ > T\textsubscript{max} \\
-    \sum\limits_{j}\ h(X_i[j]), \ se \sum\limits_{j}\ X_i[j] <= T\textsubscript{max}\\
+    \sum\limits_{j}\ h(X_i, j]), \ se \sum\limits_{j}\ X_i[j] <= T\textsubscript{max}\\
     \end{cases}
 \end{equation}
 
 \begin{equation}    
-h(X_i) = \begin{cases} 
+h(X_i, j) = \begin{cases} 
     P[j] * V_p - C[j] ,\  se \  X_i[j] = 1 \\
     P[j] * V_p * \frac{D\textsubscript{max} - min(D(j, k))}{D\textsubscript{max}}, \ se \ X_i[j] = 0 \ \wedge k \in L(j, D\textsubscript{max}) \ \wedge X_i[k] = 1 \\
     -P[j] * C_p,\  se \ X_i[j] = 0 \ \wedge \ \forall _k \ (k \in L(j, D\textsubscript{max}) \ \implies \  X_i[k] = 0) \\
@@ -170,7 +170,7 @@ Em que:
 \item $V_p$ representa o valor de uma pessoa ter acesso a um tribunal perto dela;
 \item $C_p$ representa o custo de uma pessoa não ter acesso a um tribunal perto dela;
 \item $C_t[j]$ representa o custo de construir um tribunal na cidade $j$;
-\item $X_i[j]$ representa a existência (1) ou não (0) de um tribunal na cidade $i$;
+\item $X_i[j]$ representa a existência (1) ou não (0) de um tribunal na cidade $j$;
 \item $D\textsubscript{max}$ representa a distância máxima desejada de uma cidade a um tribunal;
 \item $D(j, k)$ representa a distância entre as cidades $j$ e $k$;
 \item $L(j, D\textsubscript{max})$ representa o conjunto das cidades que se encontram no máximo a $D\textsubscript{max}$ da cidade $j$, excluindo $j$;
