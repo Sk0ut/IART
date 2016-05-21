@@ -1,4 +1,4 @@
-package genetic;
+package utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class Chromosome implements Comparable<Chromosome>{
      * Value setter.
      * @param value The value.
      */
-    protected void setValue(double value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
@@ -37,7 +37,7 @@ public class Chromosome implements Comparable<Chromosome>{
      * The chromosome constructor.
      * @param length Length of the chromosome's genome.
      */
-    protected Chromosome(int length){
+    public Chromosome(int length){
         genome = new ArrayList<>();
         for(int i = 0; i < length; ++i){
             genome.add(false);
@@ -47,7 +47,7 @@ public class Chromosome implements Comparable<Chromosome>{
     /**
      * Randomize the chromosome's genes. Used in the first generation.
      */
-    protected void randomizeChromosomeGenes() {
+    public void randomizeChromosomeGenes() {
         for(int i = 0; i < genome.size(); ++i){
             genome.set(i, new Random().nextBoolean());
         }
@@ -58,7 +58,7 @@ public class Chromosome implements Comparable<Chromosome>{
      * @param geneNo Number of the gene to set.
      * @param gene Gene value.
      */
-    protected void setGene(int geneNo, boolean gene){
+    public void setGene(int geneNo, boolean gene){
         genome.set(geneNo, gene);
     }
 
@@ -95,7 +95,7 @@ public class Chromosome implements Comparable<Chromosome>{
      * Flips a gene's value. Used in the mutation phase.
      * @param geneNo Gene to flip.
      */
-    protected void flip(int geneNo){ genome.set(geneNo, !genome.get(geneNo)); }
+    public void flip(int geneNo){ genome.set(geneNo, !genome.get(geneNo)); }
 
 
     @Override

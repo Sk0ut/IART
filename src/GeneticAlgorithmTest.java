@@ -2,7 +2,9 @@
  * Created by Afonso on 10-03-2016.
  */
 
-import genetic.*;
+import algorithms.*;
+import utils.Chromosome;
+import utils.State;
 
 public class GeneticAlgorithmTest extends GeneticAlgorithm {
 
@@ -19,7 +21,7 @@ public class GeneticAlgorithmTest extends GeneticAlgorithm {
     }
 
     @Override
-    public boolean stopCondition(int iterations, Chromosome bestChromosome) {
-        return bestChromosome.getValue() >= 29;
+    public boolean stopCondition() {
+        return getBestChromosome().getValue() > 29;
     }
 }

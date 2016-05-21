@@ -1,6 +1,6 @@
 import cityparser.City;
 import cityparser.CityParser;
-import genetic.Chromosome;
+import utils.Chromosome;
 
 import java.util.List;
 

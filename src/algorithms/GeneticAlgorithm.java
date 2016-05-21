@@ -1,4 +1,7 @@
-package genetic;
+package algorithms;
+
+import utils.Chromosome;
+import utils.Command;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +20,7 @@ import java.util.Random;
  * the given probability.
  * 5- Check if the end condition applies. If not, return to step 2.
  */
-public abstract class GeneticAlgorithm {
+public abstract class GeneticAlgorithm implements Command {
 
     /**
      * Uses the tournament approach in selecting the two parents. The tournament approach consists in choosing N
@@ -157,7 +160,7 @@ public abstract class GeneticAlgorithm {
             averageValue = getAverageValue();
             ++iterations;
             System.out.println("Iteration " + iterations + ": Best Value: " + getBestChromosome().getValue() + " Average Value: " + averageValue);
-            if(stopCondition(iterations, getBestChromosome()))
+            if(stopCondition())
                 return getBestChromosome();
             }
     }
@@ -174,21 +177,6 @@ public abstract class GeneticAlgorithm {
         averageValue = averageValue/chromosomes.size();
         return averageValue;
     }
-
-    /**
-     * The evaluate function used to assign a value to a chromosome. Abstract function.
-     * @param chromosome Chromosome to assign a value.
-     * @return The value of the chromosome.
-     */
-    public abstract double evaluate(Chromosome chromosome);
-
-    /**
-     * The stop condition for the algorithm. Abstract method.
-     * @param iterations The current number of iterations.
-     * @param bestChromosome The current best chromosome.
-     * @return True if the stop condition has already been met, false otherwise.
-     */
-    public abstract boolean stopCondition(int iterations, Chromosome bestChromosome);
 
     /**
      * The size of the tournament. When the tournament algorithm is selected for selection, this determines how many
@@ -329,7 +317,7 @@ public abstract class GeneticAlgorithm {
      * Returns the best chromosome from the current generation.
      * @return The best chromosome.
      */
-    private Chromosome getBestChromosome() {
+    protected Chromosome getBestChromosome() {
         double bestChromosomeValue = 0;
         Chromosome bestChromosome = null;
 
