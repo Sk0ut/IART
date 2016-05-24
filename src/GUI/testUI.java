@@ -1,6 +1,9 @@
 package GUI;
 
+import jdk.nashorn.internal.runtime.options.Options;
+
 import javax.swing.*;
+import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -97,6 +100,8 @@ public class testUI {
             public void actionPerformed(ActionEvent e) {
                 //TODO generate options window
                 System.out.println("Generating options window...");
+                OptionsUI options = new OptionsUI(mainFrame);
+                options.render();
             }
         });
 
