@@ -2,12 +2,15 @@ package utils;
 
 import cityparser.City;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 
 public class TribunalDistributionChromosome extends Chromosome {
     private Vector<City> cities;
     private int numTribunals;
+    private int geneSize;
 
     /**
      * The chromosome constructor.
@@ -15,6 +18,7 @@ public class TribunalDistributionChromosome extends Chromosome {
      */
     public TribunalDistributionChromosome(Vector<City> cities, int numTribunals) {
         super(neededLength(cities.size(), numTribunals));
+        geneSize = neededLength(cities.size(), numTribunals);
         setCities(cities);
         setNumTribunals(numTribunals);
     }
@@ -37,5 +41,14 @@ public class TribunalDistributionChromosome extends Chromosome {
 
     public void setNumTribunals(int numTribunals) {
         this.numTribunals = numTribunals;
+    }
+
+    public List<Integer> listSelectedTribunals() {
+        List<Integer> result = new LinkedList<>();
+
+        for (int i = 0; i < numTribunals; ++i) {
+
+        }
+        return null;
     }
 }

@@ -3,6 +3,7 @@ import cityparser.CityParser;
 import cityparser.Data;
 import utils.Chromosome;
 
+import java.util.BitSet;
 import java.util.List;
 import java.util.Vector;
 
@@ -13,6 +14,7 @@ public class Main {
     /* File to store the city info */
     private final static String fileName = "cities.ser";
     public static void main (String args[]) {
+        /*
         CityParser parser = new CityParser();
         Data data = parser.getData(fileName);
         if (data.getCities() != null) {
@@ -26,5 +28,15 @@ public class Main {
         Chromosome bestChromosome = ga.run();
         System.out.println("Solution: " + bestChromosome);
         System.out.println("Value: " + bestChromosome.getValue());*/
+        test();
+    }
+
+    public static void test() {
+        BitSet bitSet = new BitSet(10);
+        bitSet.set(0, 9, false);
+        System.out.println(bitSet.toByteArray().length);
+        for (byte b : bitSet.toByteArray()) {
+            System.out.println(b);
+        }
     }
 }

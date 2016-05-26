@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Random;
 
@@ -15,7 +16,13 @@ public class Chromosome implements Comparable<Chromosome>{
     /**
      * The chromosome's genome.
      */
-    private List<Boolean> genome;
+    private byte[] genome;
+    /**
+     *
+     */
+    private int genomeLength;
+
+    private Random randomizer = new Random();
 
     /**
      * Value getter.
@@ -38,19 +45,15 @@ public class Chromosome implements Comparable<Chromosome>{
      * @param length Length of the chromosome's genome.
      */
     public Chromosome(int length){
-        genome = new ArrayList<>();
-        for(int i = 0; i < length; ++i){
-            genome.add(false);
-        }
+        genomeLength = length;
+        genome = new byte[(int) Math.ceil(genomeLength / 8.0)];
     }
 
     /**
      * Randomize the chromosome's genes. Used in the first generation.
      */
     public void randomizeChromosomeGenes() {
-        for(int i = 0; i < genome.size(); ++i){
-            genome.set(i, new Random().nextBoolean());
-        }
+        randomizer.nextBytes(genome);
     }
 
     /**
@@ -59,7 +62,7 @@ public class Chromosome implements Comparable<Chromosome>{
      * @param gene Gene value.
      */
     public void setGene(int geneNo, boolean gene){
-        genome.set(geneNo, gene);
+        genome[geneNo / 8] = (byte) (gene ? genome[geneNo / 8] | (1 << (geneNo % 8)) : genome[geneNo / 8] & ~(1 << (geneNo % 8)));
     }
 
     /**
@@ -68,14 +71,14 @@ public class Chromosome implements Comparable<Chromosome>{
      * @return Gene value.
      */
     public boolean getGene(int geneNo){
-        return genome.get(geneNo);
+        return genome[geneNo / 8] >> (geneNo % 8) != 0;
     }
 
     /**
      * @return The genome's size.
      */
     public int size(){
-        return genome.size();
+        return genomeLength;
     }
 
     /**
@@ -83,19 +86,16 @@ public class Chromosome implements Comparable<Chromosome>{
      * @return The cardinality.
      */
     public int cardinality(){
-        int c = 0;
-        for (Boolean gene : genome) {
-            if (gene)
-                c++;
-        }
-        return c;
+       return BitSet.valueOf(genome).cardinality();
     }
 
     /**
      * Flips a gene's value. Used in the mutation phase.
      * @param geneNo Gene to flip.
      */
-    public void flip(int geneNo){ genome.set(geneNo, !genome.get(geneNo)); }
+    public void flip(int geneNo){
+        genome[geneNo / 8] ^= 1 << (geneNo % 8);
+    }
 
 
     @Override

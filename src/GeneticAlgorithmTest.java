@@ -4,12 +4,15 @@
 
 import algorithms.*;
 import utils.Chromosome;
-import utils.State;
+import utils.DataSet;
 
 public class GeneticAlgorithmTest extends GeneticAlgorithm {
 
-    public GeneticAlgorithmTest() {
+    private DataSet dataset;
+
+    public GeneticAlgorithmTest(DataSet dataset) {
         super(30, 20, GeneticAlgorithm.UNIFORMCROSSOVER|GeneticAlgorithm.TOURNAMENTSELECTION|GeneticAlgorithm.ELITISM);
+        this.dataset = dataset;
         setUniformRate(0.5);
         setElitismSize(1);
         setMutationRate(0.01);

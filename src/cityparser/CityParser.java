@@ -25,7 +25,7 @@ public class CityParser {
      * This is my Google Maps Geocoding API Key. YOU ARE PROHIBITED TO USE THIS IN ANY WAY OTHER THAN IN THE CONTEXT
      * OF THIS APPLICATION.
      */
-    private final static String googleApiKey = "AIzaSyDz40hA-iPh957WG8FXY1G6jMOxgKHTAzI";
+    private final static String googleApiKey = "AIzaSyB3TakWR4IDH1nNSFOImzorg5Dfy-gmmMU";
 
     private Data data = new Data();
 
@@ -43,7 +43,7 @@ public class CityParser {
     public Data getData(String fileName){
         File f = new File(fileName);
         if(f.exists() && !f.isDirectory())
-            unserializeCities(fileName);
+            data =  unserializeCities(fileName);
         else {
             System.out.println("Extracting data from the Web...");
             extractHtml();
