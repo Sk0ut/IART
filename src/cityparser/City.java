@@ -22,6 +22,11 @@ public class City implements java.io.Serializable{
     private double longitude;
 
     /**
+     * Cost of building a court in this city.
+     */
+    private int cost;
+
+    /**
      * City constructor.
      * @param name The name of the city.
      * @param population Population of the city.
@@ -29,6 +34,10 @@ public class City implements java.io.Serializable{
     public City(String name, int population) {
         this.name = name;
         this.population = population;
+        if(Data.constructionCosts.containsKey(name))
+            this.cost = Data.constructionCosts.get(name);
+        else
+            this.cost = Data.constructionCosts.get("Outros");
     }
 
     /**
@@ -81,6 +90,6 @@ public class City implements java.io.Serializable{
 
     @Override
     public String toString() {
-        return name + " - Population: " + population + " Coordinates: (" + latitude + "," + longitude + ")";
+        return name + " - Population: " + population + " Court cost - " + cost + " Coordinates: (" + latitude + "," + longitude + ")";
     }
 }
