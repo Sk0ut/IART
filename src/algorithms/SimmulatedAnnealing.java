@@ -1,12 +1,12 @@
 package algorithms;
 
 import utils.Chromosome;
-import utils.Command;
+import utils.OptimizationAlgorithm;
 
 /**
  * Created by Afonso on 21/05/2016.
  */
-public abstract class SimmulatedAnnealing implements Command {
+public abstract class SimmulatedAnnealing extends OptimizationAlgorithm {
     private double temperature;
     private double coolingRate;
     private int chromosomeLength;
@@ -24,6 +24,7 @@ public abstract class SimmulatedAnnealing implements Command {
             if (acceptNewChromosome(bestChromosome.getValue(), newCandidate.getValue()))
                 bestChromosome = newCandidate;
             temperature *= 1-coolingRate;
+            incrementIterations();
         }
         return bestChromosome;
     }

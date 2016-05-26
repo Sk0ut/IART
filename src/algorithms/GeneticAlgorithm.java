@@ -1,7 +1,7 @@
 package algorithms;
 
 import utils.Chromosome;
-import utils.Command;
+import utils.OptimizationAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +20,7 @@ import java.util.Random;
  * the given probability.
  * 5- Check if the end condition applies. If not, return to step 2.
  */
-public abstract class GeneticAlgorithm implements Command {
+public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
 
     /**
      * Uses the tournament approach in selecting the two parents. The tournament approach consists in choosing N
@@ -148,7 +148,6 @@ public abstract class GeneticAlgorithm implements Command {
      * @return When the algorithm ends, the best chromosome.
      */
     public Chromosome run(){
-        int iterations = 0;
         double averageValue = getAverageValue();
         System.out.println("Start: Best Value: " + getBestChromosome().getValue() + " Average Value: " + averageValue);
 
@@ -158,8 +157,8 @@ public abstract class GeneticAlgorithm implements Command {
             evaluation();
 
             averageValue = getAverageValue();
-            ++iterations;
-            System.out.println("Iteration " + iterations + ": Best Value: " + getBestChromosome().getValue() + " Average Value: " + averageValue);
+            incrementIterations();
+            System.out.println("Iteration " + getIterations() + ": Best Value: " + getBestChromosome().getValue() + " Average Value: " + averageValue);
             if(stopCondition())
                 return getBestChromosome();
             }
@@ -317,7 +316,7 @@ public abstract class GeneticAlgorithm implements Command {
      * Returns the best chromosome from the current generation.
      * @return The best chromosome.
      */
-    protected Chromosome getBestChromosome() {
+    public Chromosome getBestChromosome() {
         double bestChromosomeValue = 0;
         Chromosome bestChromosome = null;
 
