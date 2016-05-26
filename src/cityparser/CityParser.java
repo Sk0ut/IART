@@ -25,7 +25,7 @@ public class CityParser {
      * This is my Google Maps Geocoding API Key. YOU ARE PROHIBITED TO USE THIS IN ANY WAY OTHER THAN IN THE CONTEXT
      * OF THIS APPLICATION.
      */
-    private final static String googleApiKey = "AIzaSyDz40hA-iPh957WG8FXY1G6jMOxgKHTAzI";
+    private final static String googleApiKey = "";
 
     private Data data = new Data();
 
