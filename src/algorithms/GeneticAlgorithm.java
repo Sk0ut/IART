@@ -228,7 +228,7 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
             mother = rouletteSelection();
         }
 
-        int length = father.size();
+        int length = father.length();
         Chromosome offspring = new Chromosome(length);
 
         if(crossoverType == UNIFORMCROSSOVER)
@@ -305,7 +305,7 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      */
     private void mutation(){
         for (Chromosome chromosome : chromosomes) {
-            for (int j = 0; j < chromosome.size(); ++j) {
+            for (int j = 0; j < chromosome.length(); ++j) {
                 if (Math.random() < mutationRate)
                     chromosome.flip(j);
             }
