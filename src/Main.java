@@ -14,8 +14,8 @@ public class Main {
     /* File to store the city info */
     private final static String fileName = "cities.ser";
     public static void main (String args[]) {
-        /*
-        CityParser parser = new CityParser();
+
+        /*CityParser parser = new CityParser();
         Data data = parser.getData(fileName);
         if (data.getCities() != null) {
             data.getCities().forEach(System.out::println);
