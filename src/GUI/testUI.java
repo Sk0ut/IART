@@ -1,9 +1,6 @@
 package GUI;
 
-import jdk.nashorn.internal.runtime.options.Options;
-
 import javax.swing.*;
-import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -92,6 +89,8 @@ public class testUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO generate results action
+                AlgorithmUI algorithmUI = new AlgorithmUI();
+                algorithmUI.render();
                 System.out.println("Generating solution...");
             }
         });
