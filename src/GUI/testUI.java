@@ -21,14 +21,15 @@ public class testUI {
     private JButton aboutButton;
     private JButton exitButton;
 
+    public CustomOptions currentOptions;
+
     public testUI(){
 
         mainFrame = new JFrame("IART");
+        currentOptions = new CustomOptions();
 
     }
     public static void main(String[] args) {
-        System.out.println("Beginning test UI");
-
         //Graph graph = new SingleGraph("I can see dead pixels");
 
         testUI GUI = new testUI();
@@ -99,9 +100,9 @@ public class testUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO generate options window
-                System.out.println("Generating options window...");
-                OptionsUI options = new OptionsUI(mainFrame);
+                OptionsUI options = new OptionsUI(mainFrame, "Options", true, currentOptions);
                 options.render();
+
             }
         });
 
@@ -109,7 +110,6 @@ public class testUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO update information action
-                System.out.println("Updating information...");
             }
         });
 
@@ -117,8 +117,10 @@ public class testUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO generate about window
-                JOptionPane.showMessageDialog(mainFrame, "About us: .......");
-                System.out.println("Generating about window...");
+                JOptionPane.showMessageDialog(mainFrame, "Consisting of eager college students, team 'Os fixezinhos da FEUP' started with the assignment of a college project in the field of Artificial Intelligence.\n" +
+                        "Wanting to excel at the project, they united the coolest, smartest and most fashionable, manly students available. All of these qualities were of \n" +
+                        "utmost importance for the perfection of the task, as the jury was blown away by the fashion sense of the students and the coolness of the presentation\n" +
+                        " way before he inspected the code behind the project, which was of such brilliance that he could only gasp at the mark he would have to grant them: 21", "About us", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 

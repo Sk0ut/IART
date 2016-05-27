@@ -4,24 +4,39 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Hashtable;
 
 /**
  * Created by Luís on 24/05/2016.
  */
-public class OptionsUI {
-    private JFrame parentFrame;
-    private JDialog optionsDialog;
+public class OptionsUI extends JDialog{
     private JPanel optionsPanel;
 
-    public OptionsUI(JFrame parentFrame) {
-        this.parentFrame = parentFrame;
+    private ButtonGroup algorithmGroup;
+
+    private JSpinner courtNumberSpinner;
+    private JSpinner budgetSpinner;
+
+    private JRadioButton geneticButton;
+    private JRadioButton simmulatedAnnealingButton;
+    private JButton saveButton;
+    private JButton cancelButton;
+
+
+
+    private CustomOptions currentOptions;
+
+    public OptionsUI(JFrame parentFrame, String dialogTitle, Boolean modal, CustomOptions currentOptions) {
+        super(parentFrame, dialogTitle, modal);
+        this.currentOptions = currentOptions;
     }
 
     private void createOptionsLayout() {
         optionsPanel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
-        optionsPanel.setBackground(Color.black);
+        //optionsPanel.setBackground(Color.black);
 
 
         Insets insets;
@@ -36,22 +51,20 @@ public class OptionsUI {
         constraints.insets = insets;
         optionsPanel.add(algorithmLabel, constraints);
 
-        ButtonGroup algorithmGroup = new ButtonGroup();
-        JRadioButton geneticButton = new JRadioButton("Genetic Algorithm");
+        algorithmGroup = new ButtonGroup();
+        geneticButton = new JRadioButton("Genetic Algorithm");
         algorithmGroup.add(geneticButton);
         insets = new Insets(8, 0, 8, 4);
         constraints.insets = insets;
         constraints.gridx = 1;
         optionsPanel.add(geneticButton, constraints);
 
-        JRadioButton simmulatedAnnealingButton = new JRadioButton("Simulated Annealing");
+        simmulatedAnnealingButton = new JRadioButton("Simulated Annealing");
         insets = new Insets(8, 4, 8, 8);
         constraints.insets = insets;
         constraints.gridx = 2;
         algorithmGroup.add(simmulatedAnnealingButton);
         optionsPanel.add(simmulatedAnnealingButton, constraints);
-
-        algorithmGroup.setSelected(geneticButton.getModel(), true);
 
         JLabel courtNumberLabel = new JLabel("Court Number");
         insets = new Insets(8, 8, 8, 0);
@@ -60,7 +73,7 @@ public class OptionsUI {
         constraints.gridy = 1;
         optionsPanel.add(courtNumberLabel, constraints);
 
-        JSpinner courtNumberSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 200, 5));
+        courtNumberSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 200, 5));
         insets = new Insets(8, 0, 8, 8);
         constraints.insets = insets;
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -77,7 +90,7 @@ public class OptionsUI {
         constraints.gridy = 2;
         optionsPanel.add(budgetLabel, constraints);
 
-        JSpinner budgetSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 500, 10));
+        budgetSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 500, 10));
         insets = new Insets(8, 0, 8, 8);
         constraints.insets = insets;
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -85,9 +98,9 @@ public class OptionsUI {
         constraints.gridy = 2;
         optionsPanel.add(budgetSpinner, constraints);
 
-        Dimension dialogDimension = optionsDialog.getSize();
+        Dimension dialogDimension = this.getSize();
 
-        JButton saveButton = new JButton("Save");
+        saveButton = new JButton("Save");
         insets = new Insets(8, (int) (dialogDimension.getWidth()/8), 8, 0);
         constraints.insets = insets;
         constraints.fill = GridBagConstraints.VERTICAL;
@@ -96,7 +109,7 @@ public class OptionsUI {
         constraints.gridwidth = 2;
         optionsPanel.add(saveButton, constraints);
 
-        JButton cancelButton = new JButton("Cancel");
+        cancelButton = new JButton("Cancel");
         insets = new Insets(8, 0, 8, (int) (dialogDimension.getWidth()/8));
         constraints.insets = insets;
         constraints.fill = GridBagConstraints.VERTICAL;
@@ -105,18 +118,50 @@ public class OptionsUI {
         constraints.gridwidth = 2;
         optionsPanel.add(cancelButton, constraints);
 
-        optionsDialog.add(optionsPanel);
+        this.add(optionsPanel);
+
+        this.loadCurrentOptions();
     }
 
     public void render() {
-        optionsDialog = new JDialog(parentFrame, "Options", true);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        optionsDialog.setSize((int)screenSize.getWidth()/4,(int) screenSize.getHeight()/4);
+        setSize((int)screenSize.getWidth()/4,(int) screenSize.getHeight()/4);
 
         createOptionsLayout();
+        addListeners();
 
-        optionsDialog.setResizable(false);
-        optionsDialog.setVisible(true);
+        setResizable(false);
+        setVisible(true);
+
+    }
+
+    public void addListeners() {
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currentOptions.setAlgorithm(geneticButton.isSelected() ? "genetic" : "simulated annealing");
+                currentOptions.setNumberTribunals((Integer) courtNumberSpinner.getValue());
+                currentOptions.setBudget((Integer) budgetSpinner.getValue());
+                dispose();
+            }
+        });
+
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+    }
+
+
+    public void loadCurrentOptions() {
+        if(currentOptions.getAlgorithm() == "genetic")
+            algorithmGroup.setSelected(geneticButton.getModel(), true);
+        else algorithmGroup.setSelected(simmulatedAnnealingButton.getModel(), true);
+
+        courtNumberSpinner.setValue(currentOptions.getNumberTribunals());
+        budgetSpinner.setValue(currentOptions.getBudget());
 
     }
 }
