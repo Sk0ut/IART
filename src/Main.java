@@ -1,5 +1,6 @@
 import cityparser.CityParser;
 import cityparser.Data;
+import utils.Chromosome;
 import utils.DataSet;
 
 import java.nio.ByteBuffer;
