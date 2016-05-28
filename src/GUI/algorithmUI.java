@@ -1,23 +1,22 @@
 package GUI;
 
+import cityparser.City;
 import cityparser.CityParser;
 import cityparser.Data;
-import com.sun.javafx.tk.Toolkit;
 
-import javax.imageio.ImageIO;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
+import javax.swing.JFrame;
+
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
+
 
 /**
  * Created by Luís on 27/05/2016.
  */
 public class AlgorithmUI{
-
-    private Data cityData;
 
     private JFrame algorithmFrame;
     private JPanel algorithmPanel;
@@ -26,13 +25,13 @@ public class AlgorithmUI{
 
     private JPanel infoPanel;
     private JLabel bestFitnessLabel;
-    private JLabel averageFitnessLabel;
+    private JLabel totalCostLabel;
+    private JList infoList;
     private JScrollPane solutionPane;
 
     public AlgorithmUI(){
         algorithmFrame = new JFrame("IART");
         CityParser parser = new CityParser();
-        cityData = parser.getData("cities.ser");
     }
 
     public void render() {
@@ -70,16 +69,16 @@ public class AlgorithmUI{
         constraints.gridy = 0;
         infoPanel.add(bestFitnessLabel, constraints);
 
-        averageFitnessLabel = new JLabel("Average Chromosome Fitness: " + getAverageChromosomeValue());
+        totalCostLabel = new JLabel("Total Cost: ");
         constraints.gridy = 1;
-        infoPanel.add(averageFitnessLabel, constraints);
+        infoPanel.add(totalCostLabel, constraints);
 
-        JLabel tribunalLocationLabel = new JLabel("Tribunal Locations updating every second");
+        JLabel tribunalLocationLabel = new JLabel("Tribunal Locations");
         constraints.gridy = 2;
         infoPanel.add(tribunalLocationLabel, constraints);
 
         //TODO create proper list
-        JList infoList = new JList(cityData.getCities());
+        infoList = new JList();
         infoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         solutionPane = new JScrollPane(infoList);
         solutionPane.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
@@ -106,5 +105,22 @@ public class AlgorithmUI{
     //TODO change to actual method
     private int getAverageChromosomeValue() {
         return 4;
+    }
+
+    public void updateSolution(List<City> cityList, double fitnessValue) {
+        bestFitnessLabel.setText("Best Chromosome Fitness: " + fitnessValue);
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        int i = 0;
+        int totalCost = 0;
+
+        for(City city : cityList){
+            arrayList.add("" + city.getName() + " | " + city.getCost());
+            totalCost += city.getCost();
+        }
+
+        infoList.setListData(arrayList.toArray());
+        totalCostLabel.setText("Total Cost: " + totalCost/1000000 + " M€");
+
     }
 }

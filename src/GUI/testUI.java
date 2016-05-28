@@ -1,5 +1,8 @@
 package GUI;
 
+import cityparser.CityParser;
+import cityparser.Data;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -91,6 +94,8 @@ public class testUI {
                 //TODO generate results action
                 AlgorithmUI algorithmUI = new AlgorithmUI();
                 algorithmUI.render();
+                CityParser parser = new CityParser();
+                algorithmUI.updateSolution(parser.getData("cities.ser").getCities(), 1000);
                 System.out.println("Generating solution...");
             }
         });

@@ -84,9 +84,7 @@ public class DataSet implements ChromosomeEvaluator {
         for (int i = 0; i < data.getCities().size(); ++i) {
             City city = data.getCities().get(i);
             if (citiesWithTribunals.get(i)) {
-                Integer constructionCost = Data.constructionCosts.get(city.getName());
-                if (constructionCost == null)
-                    constructionCost = Data.constructionCosts.get("Outros");
+                Integer constructionCost = Data.getConstructionCost(city.getName());
                 result += city.getPopulation() * citizenValue - constructionCost;
             } else {
                 double shortestDistance = Double.POSITIVE_INFINITY;

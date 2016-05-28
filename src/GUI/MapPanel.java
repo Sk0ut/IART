@@ -1,6 +1,11 @@
 package GUI;
 
+import cityparser.City;
+
 import javax.imageio.ImageIO;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -25,15 +30,7 @@ public class MapPanel extends JPanel {
             e.printStackTrace();
         }
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        map = createResizedCopy(map, (int) (screenSize.getWidth()/1.5), (int) screenSize.getHeight(), true);
-
-        mapLabel = new JLabel(new ImageIcon(map));
-        add(mapLabel);
-
-        System.out.println("Image height: " + map.getHeight());
-        System.out.println("Image width: " + map.getWidth());
-
+        renderMap(null);
     }
 
     private BufferedImage createResizedCopy(Image originalImage,
@@ -50,4 +47,26 @@ public class MapPanel extends JPanel {
         g.dispose();
         return scaledBI;
     }
+
+    public void renderMap(List<City> cityList) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        map = createResizedCopy(map, (int) (screenSize.getWidth()/1.5), (int) screenSize.getHeight(), true);
+
+        addCityMarkers(map.getGraphics(), cityList);
+
+        mapLabel = new JLabel(new ImageIcon(map));
+        add(mapLabel);
+    }
+
+    private void addCityMarkers(Graphics mapGraphics, List<City> cityList) {
+        mapGraphics.setColor(new Color(128, 0, 128));
+
+
+        for (City city : cityList) {
+
+        }
+    }
+
+
 }
