@@ -1,8 +1,6 @@
 package utils;
 
-import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -45,8 +43,8 @@ public class Chromosome implements Comparable<Chromosome>{
      * @param length Length of the chromosome's genome.
      */
     public Chromosome(int length){
-        genomeLength = length;
-        genome = new byte[(int) Math.ceil(genomeLength / 8.0)];
+        setLength(length);
+        genome = new byte[(int) Math.ceil(length() / 8.0)];
     }
 
     /**
@@ -75,9 +73,9 @@ public class Chromosome implements Comparable<Chromosome>{
     }
 
     /**
-     * @return The genome's size.
+     * @return The genome's length.
      */
-    public int size(){
+    public int length(){
         return genomeLength;
     }
 
@@ -102,7 +100,7 @@ public class Chromosome implements Comparable<Chromosome>{
     public String toString() {
         String ret = "";
 
-        for(int i = 0; i < size(); ++i){
+        for(int i = 0; i < length(); ++i){
             if(getGene(i))
                 ret += 1;
             else
@@ -115,5 +113,13 @@ public class Chromosome implements Comparable<Chromosome>{
     @Override
     public int compareTo(Chromosome o) {
         return Double.compare(value, o.getValue());
+    }
+
+    private void setLength(int length) {
+        genomeLength = length;
+    }
+
+    public byte[] toByteArray() {
+        return genome;
     }
 }
