@@ -11,12 +11,9 @@ public class Chromosome implements Comparable<Chromosome>{
      * The value of the chromosome.
      */
     private double value;
+    private BitSet genome;
     /**
-     * The chromosome's genome.
-     */
-    private byte[] genome;
-    /**
-     *
+     * The genome's length.
      */
     private int genomeLength;
 
@@ -44,14 +41,16 @@ public class Chromosome implements Comparable<Chromosome>{
      */
     public Chromosome(int length){
         setLength(length);
-        genome = new byte[(int) Math.ceil(length() / 8.0)];
+        genome = new BitSet(length);
     }
 
     /**
      * Randomize the chromosome's genes. Used in the first generation.
      */
     public void randomizeChromosomeGenes() {
-        randomizer.nextBytes(genome);
+        for(int i = 0; i < length(); ++i) {
+            genome.set(i, randomizer.nextBoolean());
+        }
     }
 
     /**
@@ -60,7 +59,9 @@ public class Chromosome implements Comparable<Chromosome>{
      * @param gene Gene value.
      */
     public void setGene(int geneNo, boolean gene){
-        genome[geneNo / 8] = (byte) (gene ? genome[geneNo / 8] | (1 << (geneNo % 8)) : genome[geneNo / 8] & ~(1 << (geneNo % 8)));
+        if (geneNo >= length())
+            throw new IndexOutOfBoundsException();
+        getGenome().set(geneNo, gene);
     }
 
     /**
@@ -69,7 +70,9 @@ public class Chromosome implements Comparable<Chromosome>{
      * @return Gene value.
      */
     public boolean getGene(int geneNo){
-        return genome[geneNo / 8] >> (geneNo % 8) != 0;
+        if (geneNo >= length())
+            throw new IndexOutOfBoundsException();
+        return getGenome().get(geneNo);
     }
 
     /**
@@ -84,7 +87,7 @@ public class Chromosome implements Comparable<Chromosome>{
      * @return The cardinality.
      */
     public int cardinality(){
-       return BitSet.valueOf(genome).cardinality();
+       return getGenome().cardinality();
     }
 
     /**
@@ -92,7 +95,9 @@ public class Chromosome implements Comparable<Chromosome>{
      * @param geneNo Gene to flip.
      */
     public void flip(int geneNo){
-        genome[geneNo / 8] ^= 1 << (geneNo % 8);
+        if (geneNo >= length())
+            throw new IndexOutOfBoundsException();
+        getGenome().flip(geneNo);
     }
 
 
@@ -100,11 +105,11 @@ public class Chromosome implements Comparable<Chromosome>{
     public String toString() {
         String ret = "";
 
-        for(int i = 0; i < length(); ++i){
+        for(int i = length() - 1; i >= 0; --i){
             if(getGene(i))
-                ret += 1;
+                ret += '1';
             else
-                ret += 0;
+                ret += '0';
         }
 
         return ret;
@@ -119,7 +124,10 @@ public class Chromosome implements Comparable<Chromosome>{
         genomeLength = length;
     }
 
-    public byte[] toByteArray() {
+    /**
+     * The chromosome's genome.
+     */
+    public BitSet getGenome() {
         return genome;
     }
 }

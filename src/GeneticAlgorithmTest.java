@@ -1,18 +1,15 @@
-/**
- * Created by Afonso on 10-03-2016.
- */
-
 import algorithms.*;
 import utils.Chromosome;
+import utils.ChromosomeEvaluator;
 import utils.DataSet;
 
 public class GeneticAlgorithmTest extends GeneticAlgorithm {
 
-    private DataSet dataset;
+    private ChromosomeEvaluator evaluator;
 
-    public GeneticAlgorithmTest(DataSet dataset) {
-        super(30, 20, GeneticAlgorithm.UNIFORMCROSSOVER|GeneticAlgorithm.TOURNAMENTSELECTION|GeneticAlgorithm.ELITISM);
-        this.dataset = dataset;
+    public GeneticAlgorithmTest(ChromosomeEvaluator evaluator, int populationSize, int settings) {
+        super(evaluator.chromosomeLength(), populationSize, settings);
+        this.evaluator = evaluator;
         setUniformRate(0.5);
         setElitismSize(1);
         setMutationRate(0.01);
@@ -20,11 +17,11 @@ public class GeneticAlgorithmTest extends GeneticAlgorithm {
 
     @Override
     public double evaluate(Chromosome chromosome) {
-        return chromosome.cardinality();
+        return evaluator.evaluate(chromosome);
     }
 
     @Override
     public boolean stopCondition() {
-        return getBestChromosome().getValue() > 29;
+        return getIterations() > 20;
     }
 }

@@ -1,5 +1,9 @@
+import algorithms.DeadPopulationException;
+import algorithms.GeneticAlgorithm;
+import cityparser.City;
 import cityparser.CityParser;
 import cityparser.Data;
+import utils.Chromosome;
 import utils.DataSet;
 
 import java.nio.ByteBuffer;
@@ -14,7 +18,9 @@ public class Main {
 
         CityParser parser = new CityParser();
         Data data = parser.getData(fileName);
-        DataSet dataSet = new DataSet(data, 5, 5, 10000, 5);
+        DataSet dataSet = new DataSet(data, 10000, 50, 10000, 10);
+        Chromosome chromosome = new Chromosome(dataSet.chromosomeLength());
+        /*
         if (data.getCities() != null) {
             data.getCities().forEach(System.out::println);
             for(int i = 0; i < data.getCities().size(); ++i) {
@@ -24,11 +30,21 @@ public class Main {
                 System.out.println(data.getCities().get(dataSet.getNearestCities().get(0).get(i)).getName());
             }
             System.out.println("Nº total de concelhos: " + data.getCities().size());
+        }*/
+        GeneticAlgorithmTest ga = new GeneticAlgorithmTest(dataSet, 200, GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.UNIFORMCROSSOVER);
+        Chromosome bestChromosome;
+        try {
+            bestChromosome = ga.run();
+        } catch (DeadPopulationException e) {
+            System.out.println("The testing population is dead");
+            return;
         }
-        /*GeneticAlgorithmTest ga = new GeneticAlgorithmTest();
-        Chromosome bestChromosome = ga.run();
         System.out.println("Solution: " + bestChromosome);
-        System.out.println("Value: " + bestChromosome.getValue());*/
+        for (City city : dataSet.getTribunals(bestChromosome)) {
+            System.out.println(city.getName());
+        }
+        System.out.println("Evaluation: " + dataSet.evaluate(bestChromosome));
+        System.out.println("Value: " + bestChromosome.getValue());
     }
 
     public static void test() {
