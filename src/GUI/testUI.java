@@ -96,6 +96,7 @@ public class testUI {
                 algorithmUI.render();
                 CityParser parser = new CityParser();
                 algorithmUI.updateSolution(parser.getData("cities.ser").getCities(), 1000);
+
                 System.out.println("Generating solution...");
             }
         });

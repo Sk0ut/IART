@@ -17,7 +17,9 @@ import java.io.InputStream;
 public class MapPanel extends JPanel {
 
 
-    private BufferedImage map;
+    private BufferedImage unchangedMap;
+    private BufferedImage currentMap;
+
     private JLabel mapLabel;
 
     public MapPanel(LayoutManager layout) {
@@ -25,12 +27,12 @@ public class MapPanel extends JPanel {
 
         try {
             InputStream input = getClass().getResourceAsStream("/resources/MapaPortugal.jpg");
-            map = ImageIO.read(input);
+            unchangedMap = ImageIO.read(input);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        renderMap(null);
+        renderMap();
     }
 
     private BufferedImage createResizedCopy(Image originalImage,
@@ -48,24 +50,37 @@ public class MapPanel extends JPanel {
         return scaledBI;
     }
 
-    public void renderMap(List<City> cityList) {
+    public void renderMap() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        map = createResizedCopy(map, (int) (screenSize.getWidth()/1.5), (int) screenSize.getHeight(), true);
+        unchangedMap = createResizedCopy(unchangedMap, (int) (screenSize.getWidth()/1.5), (int) screenSize.getHeight(), true);
 
-        addCityMarkers(map.getGraphics(), cityList);
+        mapLabel = new JLabel(new ImageIcon(unchangedMap));
 
-        mapLabel = new JLabel(new ImageIcon(map));
         add(mapLabel);
     }
 
-    private void addCityMarkers(Graphics mapGraphics, List<City> cityList) {
+    public void addCityMarkers(List<City> cityList) {
+        int mapWidth = unchangedMap.getWidth();
+        int mapHeight = unchangedMap.getHeight();
+        System.out.println("Wid: " + mapWidth);
+        System.out.println("height: " + mapHeight);
+
+        currentMap = unchangedMap.getSubimage(0, 0, unchangedMap.getWidth(), unchangedMap.getHeight());
+
+
+        Graphics mapGraphics = currentMap.getGraphics();
         mapGraphics.setColor(new Color(128, 0, 128));
 
 
+        mapGraphics.fillOval(100, 100, 50, 50);
         for (City city : cityList) {
+            //TODO draw thing thing
 
+            continue;
         }
+
+        mapLabel.setIcon(new ImageIcon(currentMap));
     }
 
 

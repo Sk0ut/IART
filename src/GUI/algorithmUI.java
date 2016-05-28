@@ -31,7 +31,6 @@ public class AlgorithmUI{
 
     public AlgorithmUI(){
         algorithmFrame = new JFrame("IART");
-        CityParser parser = new CityParser();
     }
 
     public void render() {
@@ -62,7 +61,7 @@ public class AlgorithmUI{
         constraints.gridwidth = 5;
         algorithmPanel.add(mapPanel, constraints);
 
-        bestFitnessLabel = new JLabel("Best Chromosome Fitness: " + getBestChromosomeValue());
+        bestFitnessLabel = new JLabel("Best Chromosome Fitness: ");
         constraints.weighty = 0.05;
         constraints.gridwidth = 1;
         constraints.gridx = 0;
@@ -97,21 +96,10 @@ public class AlgorithmUI{
         algorithmFrame.add(algorithmPanel);
     }
 
-    //TODO change to actual method
-    private int getBestChromosomeValue() {
-        return 10;
-    }
-
-    //TODO change to actual method
-    private int getAverageChromosomeValue() {
-        return 4;
-    }
-
     public void updateSolution(List<City> cityList, double fitnessValue) {
         bestFitnessLabel.setText("Best Chromosome Fitness: " + fitnessValue);
 
         ArrayList<String> arrayList = new ArrayList<>();
-        int i = 0;
         int totalCost = 0;
 
         for(City city : cityList){
@@ -121,6 +109,8 @@ public class AlgorithmUI{
 
         infoList.setListData(arrayList.toArray());
         totalCostLabel.setText("Total Cost: " + totalCost/1000000 + " M€");
+
+        mapPanel.addCityMarkers(cityList);
 
     }
 }
