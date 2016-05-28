@@ -75,18 +75,8 @@ public class DataSet implements ChromosomeEvaluator {
         if (chromosome.length() != chromosomeLength())
             return 0;
 
-        BitSet bitSet = BitSet.valueOf(chromosome.toByteArray());
-        BitSet citiesWithTribunals = new BitSet(data.getCities().size());
-
-        for (int i = 0; i < numberOfGenes(); ++i) {
-            BitSet subSet = bitSet.get(i*geneLength(), (i+1)*geneLength());
-
-            ByteBuffer buffer = ByteBuffer.wrap(Arrays.copyOf(subSet.toByteArray(), Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN);
-            int selectedCity = buffer.getInt();
-            if (selectedCity >= numTribunals)
-                return 0;
-            citiesWithTribunals.set(selectedCity);
-        }
+        String representation = chromosome.toString();
+        BitSet citiesWithTribunals = getTribunalsBitSet(chromosome);
 
         if (citiesWithTribunals.cardinality() != numTribunals)
             return 0;
@@ -94,7 +84,10 @@ public class DataSet implements ChromosomeEvaluator {
         for (int i = 0; i < data.getCities().size(); ++i) {
             City city = data.getCities().get(i);
             if (citiesWithTribunals.get(i)) {
-                result += city.getPopulation() * citizenValue - Data.constructionCosts.get(city.getName());
+                Integer constructionCost = Data.constructionCosts.get(city.getName());
+                if (constructionCost == null)
+                    constructionCost = Data.constructionCosts.get("Outros");
+                result += city.getPopulation() * citizenValue - constructionCost;
             } else {
                 double shortestDistance = Double.POSITIVE_INFINITY;
                 for (int j : nearestCities.get(i)) {
@@ -114,5 +107,33 @@ public class DataSet implements ChromosomeEvaluator {
         }
 
         return result;
+    }
+
+    private BitSet getTribunalsBitSet(Chromosome chromosome) {
+        BitSet bitSet = chromosome.getGenome();
+        BitSet citiesWithTribunals = new BitSet();
+
+        for (int i = 0; i < numberOfGenes(); ++i) {
+            BitSet subSet = bitSet.get(i*geneLength(), (i+1)*geneLength());
+
+            ByteBuffer buffer = ByteBuffer.wrap(Arrays.copyOf(subSet.toByteArray(), Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN);
+            int selectedCity = buffer.getInt();
+            if (selectedCity >= data.getCities().size())
+                continue;
+            citiesWithTribunals.set(selectedCity);
+        }
+        return citiesWithTribunals;
+    }
+
+    public List<City> getTribunals(Chromosome chromosome) {
+        BitSet tribunalsBitSet = getTribunalsBitSet(chromosome);
+        List<City> tribunals = new LinkedList<>();
+
+        for (int i = 0; i < data.getCities().size(); ++i) {
+            if (tribunalsBitSet.get(i))
+                tribunals.add(data.getCities().get(i));
+        }
+
+        return tribunals;
     }
 }

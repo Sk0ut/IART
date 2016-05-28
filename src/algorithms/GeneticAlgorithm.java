@@ -1,5 +1,6 @@
 package algorithms;
 
+import cityparser.City;
 import utils.Chromosome;
 import utils.OptimizationAlgorithm;
 
@@ -121,8 +122,6 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
             chromosomes.add(chromosome);
         }
 
-        evaluation();
-
         if((settings & TOURNAMENTSELECTION) != 0){
             tournamentSize = initialPopulation/4;
             selectionType = TOURNAMENTSELECTION;
@@ -147,11 +146,14 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * Run the algorithm.
      * @return When the algorithm ends, the best chromosome.
      */
-    public Chromosome run(){
+    public Chromosome run() throws DeadPopulationException {
+        evaluation();
+
         double averageValue = getAverageValue();
         System.out.println("Start: Best Value: " + getBestChromosome().getValue() + " Average Value: " + averageValue);
 
         while(true){
+            checkDeadPopulation();
             breeding();
             mutation();
             evaluation();
@@ -162,6 +164,15 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
             if(stopCondition())
                 return getBestChromosome();
             }
+    }
+
+    private void checkDeadPopulation() throws DeadPopulationException {
+        for (Chromosome chromosome: chromosomes) {
+            if (chromosome.getValue() > 0)
+                return;
+        }
+
+        throw new DeadPopulationException();
     }
 
     /**
@@ -296,7 +307,7 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      */
     private void evaluation(){
         for(Chromosome chromosome : chromosomes)
-            chromosome.setValue(evaluate(chromosome));
+            chromosome.setValue(Math.max(evaluate(chromosome), 0));
     }
 
     /**
@@ -317,7 +328,7 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * @return The best chromosome.
      */
     public Chromosome getBestChromosome() {
-        double bestChromosomeValue = 0;
+        double bestChromosomeValue = -1;
         Chromosome bestChromosome = null;
 
         for (Chromosome chromosome : chromosomes) {
@@ -360,16 +371,13 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * @return The chosen chromosome.
      */
     private Chromosome rouletteSelection() {
-        float prob = new Random().nextFloat();
-
-        int i = 0;
-        while(true){
-            if(probabilities.get(i) > prob)
-                break;
-            ++i;
+        while (true) {
+            float prob = new Random().nextFloat();
+            for (int i = 0; i < probabilities.size(); ++i) {
+                if (probabilities.get(i) >= prob)
+                    return chromosomes.get(i);
+            }
         }
-
-        return chromosomes.get(i);
     }
 
     /**
