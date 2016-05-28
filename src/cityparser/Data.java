@@ -8,7 +8,7 @@ import java.util.Vector;
  */
 public class Data implements java.io.Serializable {
 
-    public static HashMap<String, Integer> constructionCosts = new HashMap<>();
+    private static HashMap<String, Integer> constructionCosts = new HashMap<>();
 
     static {
         /**
@@ -140,5 +140,14 @@ public class Data implements java.io.Serializable {
 
     public Vector<Vector<Double>> getDistances() {
         return distances;
+    }
+
+    public static int getConstructionCost(String cityName) {
+        Integer cost = constructionCosts.get(cityName);
+        if(cost == null) {
+            cost = constructionCosts.get("Outros");
+        }
+
+        return cost;
     }
 }

@@ -1,9 +1,9 @@
 package GUI;
 
-import jdk.nashorn.internal.runtime.options.Options;
+import cityparser.CityParser;
+import cityparser.Data;
 
 import javax.swing.*;
-import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -92,6 +92,11 @@ public class testUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO generate results action
+                AlgorithmUI algorithmUI = new AlgorithmUI();
+                algorithmUI.render();
+                CityParser parser = new CityParser();
+                algorithmUI.updateSolution(parser.getData("cities.ser").getCities(), 1000);
+
                 System.out.println("Generating solution...");
             }
         });
@@ -120,7 +125,7 @@ public class testUI {
                 JOptionPane.showMessageDialog(mainFrame, "Consisting of eager college students, team 'Os fixezinhos da FEUP' started with the assignment of a college project in the field of Artificial Intelligence.\n" +
                         "Wanting to excel at the project, they united the coolest, smartest and most fashionable, manly students available. All of these qualities were of \n" +
                         "utmost importance for the perfection of the task, as the jury was blown away by the fashion sense of the students and the coolness of the presentation\n" +
-                        " way before he inspected the code behind the project, which was of such brilliance that he could only gasp at the mark he would have to grant them: 21", "About us", JOptionPane.INFORMATION_MESSAGE);
+                        " way before he inspected the code behind the project, which was of such brilliance that he could only gasp at the mark he would have to grant them: 20", "About us", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 

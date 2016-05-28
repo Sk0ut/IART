@@ -34,10 +34,7 @@ public class City implements java.io.Serializable{
     public City(String name, int population) {
         this.name = name;
         this.population = population;
-        if(Data.constructionCosts.containsKey(name))
-            this.cost = Data.constructionCosts.get(name);
-        else
-            this.cost = Data.constructionCosts.get("Outros");
+        this.cost = Data.getConstructionCost(name);
     }
 
     /**
@@ -91,5 +88,9 @@ public class City implements java.io.Serializable{
     @Override
     public String toString() {
         return name + " - Population: " + population + " Court cost - " + cost + " Coordinates: (" + latitude + "," + longitude + ")";
+    }
+
+    public int getCost() {
+        return cost;
     }
 }
