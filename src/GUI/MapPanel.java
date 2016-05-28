@@ -10,9 +10,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
-/**
- * Created by Luís on 28/05/2016.
- */
 public class MapPanel extends JPanel {
 
 

@@ -1,6 +1,6 @@
 package GUI;
 
-//TODO change to singleton design pattern
+
 public class CustomOptions {
     private String algorithm;
     private int numberTribunals;

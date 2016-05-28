@@ -1,10 +1,7 @@
 package GUI;
 
 import cityparser.City;
-import cityparser.CityParser;
-import cityparser.Data;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -12,10 +9,6 @@ import javax.swing.JFrame;
 
 import java.awt.*;
 
-
-/**
- * Created by Luís on 27/05/2016.
- */
 public class AlgorithmUI{
 
     private JFrame algorithmFrame;
@@ -103,7 +96,7 @@ public class AlgorithmUI{
         int totalCost = 0;
 
         for(City city : cityList){
-            arrayList.add("" + city.getName() + " | " + city.getCost());
+            arrayList.add("" + city.getName() + " | " + (double) city.getCost()/1000000 + " M€");
             totalCost += city.getCost();
         }
 

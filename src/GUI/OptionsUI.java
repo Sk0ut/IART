@@ -1,16 +1,13 @@
 package GUI;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Hashtable;
 
-/**
- * Created by Luís on 24/05/2016.
- */
+
+
 public class OptionsUI extends JDialog{
     private JPanel optionsPanel;
 

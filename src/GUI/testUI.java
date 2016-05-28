@@ -1,16 +1,13 @@
 package GUI;
 
 import cityparser.CityParser;
-import cityparser.Data;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Created by Luís on 24/05/2016.
- */
+
 public class testUI {
 
     private JFrame mainFrame;
@@ -30,8 +27,6 @@ public class testUI {
 
     }
     public static void main(String[] args) {
-        //Graph graph = new SingleGraph("I can see dead pixels");
-
         testUI GUI = new testUI();
         GUI.render();
     }
@@ -49,7 +44,6 @@ public class testUI {
 
     }
     public void createFrameLayout() {
-        //mainFrame.setLayout(new GridBagLayout());
         JPanel pane = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
