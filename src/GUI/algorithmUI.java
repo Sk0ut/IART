@@ -22,21 +22,14 @@ public class AlgorithmUI{
     private JFrame algorithmFrame;
     private JPanel algorithmPanel;
 
-    private JPanel mapPanel;
-    private JLabel mapLabel;
-    private BufferedImage map;
+    private MapPanel mapPanel;
 
     private JPanel infoPanel;
-    private JButton infoButton;
+    private JLabel bestFitnessLabel;
+    private JLabel averageFitnessLabel;
+    private JScrollPane solutionPane;
 
     public AlgorithmUI(){
-        try {
-            InputStream input = getClass().getResourceAsStream("/resources/MapaPortugal.jpg");
-            map = ImageIO.read(input);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         algorithmFrame = new JFrame("IART");
         CityParser parser = new CityParser();
         cityData = parser.getData("cities.ser");
@@ -47,7 +40,6 @@ public class AlgorithmUI{
         algorithmFrame.setSize((int)(screenSize.getWidth()),(int) (screenSize.getHeight()));
         algorithmFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-        map = createResizedCopy(map, (int) (screenSize.getWidth()/1.5), (int) screenSize.getHeight(), true);
         createFrameLayout();
 
 
@@ -59,46 +51,60 @@ public class AlgorithmUI{
         algorithmPanel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
-        mapPanel = new JPanel(new GridBagLayout());
+        mapPanel = new MapPanel(new GridBagLayout());
         infoPanel = new JPanel(new GridBagLayout());
+
 
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 1;
         constraints.weighty = 1;
         constraints.gridx = 0;
         constraints.gridy = 0;
-
-        mapLabel = new JLabel(new ImageIcon(map));
-
-        mapPanel.add(mapLabel);
-
-        constraints.gridwidth = 4;
+        constraints.gridwidth = 5;
         algorithmPanel.add(mapPanel, constraints);
 
-        infoButton = new JButton("Information");
-        infoButton.setBackground(Color.black);
-        infoButton.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
-        constraints.gridx = 0;
+        bestFitnessLabel = new JLabel("Best Chromosome Fitness: " + getBestChromosomeValue());
+        constraints.weighty = 0.05;
         constraints.gridwidth = 1;
-        infoPanel.add(infoButton, constraints);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        infoPanel.add(bestFitnessLabel, constraints);
 
-        constraints.gridx = 4;
+        averageFitnessLabel = new JLabel("Average Chromosome Fitness: " + getAverageChromosomeValue());
+        constraints.gridy = 1;
+        infoPanel.add(averageFitnessLabel, constraints);
+
+        JLabel tribunalLocationLabel = new JLabel("Tribunal Locations updating every second");
+        constraints.gridy = 2;
+        infoPanel.add(tribunalLocationLabel, constraints);
+
+        //TODO create proper list
+        JList infoList = new JList(cityData.getCities());
+        infoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        solutionPane = new JScrollPane(infoList);
+        solutionPane.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
+        constraints.weighty = 1;
+        constraints.gridy = 3;
+        constraints.gridheight = 100;
+        constraints.insets = new Insets(0, 0, 25, 25);
+        infoPanel.add(solutionPane, constraints);
+
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.gridy = 0;
+        constraints.gridx = 6;
+        constraints.insets = new Insets(0,0,0,0);
         algorithmPanel.add(infoPanel, constraints);
         algorithmFrame.add(algorithmPanel);
     }
 
-    private BufferedImage createResizedCopy(Image originalImage,
-                                    int scaledWidth, int scaledHeight,
-                                    boolean preserveAlpha)
-    {
-        int imageType = preserveAlpha ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
-        BufferedImage scaledBI = new BufferedImage(scaledWidth, scaledHeight, imageType);
-        Graphics2D g = scaledBI.createGraphics();
-        if (preserveAlpha) {
-            g.setComposite(AlphaComposite.Src);
-        }
-        g.drawImage(originalImage, 0, 0, scaledWidth, scaledHeight, null);
-        g.dispose();
-        return scaledBI;
+    //TODO change to actual method
+    private int getBestChromosomeValue() {
+        return 10;
+    }
+
+    //TODO change to actual method
+    private int getAverageChromosomeValue() {
+        return 4;
     }
 }
