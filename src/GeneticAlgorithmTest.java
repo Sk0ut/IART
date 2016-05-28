@@ -11,8 +11,8 @@ public class GeneticAlgorithmTest extends GeneticAlgorithm {
         super(evaluator.chromosomeLength(), populationSize, settings);
         this.evaluator = evaluator;
         setUniformRate(0.5);
-        setElitismSize(1);
-        setMutationRate(0.01);
+        setElitismSize(100);
+        setMutationRate(0.002);
     }
 
     @Override

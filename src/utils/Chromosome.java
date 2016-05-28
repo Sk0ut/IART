@@ -102,6 +102,16 @@ public class Chromosome implements Comparable<Chromosome>{
 
 
     @Override
+    public Object clone() {
+        Chromosome cloneChromosome = new Chromosome(genomeLength);
+        for (int i = 0; i < genomeLength; ++i) {
+            cloneChromosome.setGene(i, getGene(i));
+        }
+        cloneChromosome.setValue(getValue());
+        return cloneChromosome;
+    }
+
+    @Override
     public String toString() {
         String ret = "";
 

@@ -106,6 +106,11 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
     List<Double> probabilities = null;
 
     /**
+     * The best chromosome in all iterations.
+     */
+    Chromosome bestChromosomeOverall = null;
+
+    /**
      * The Genetic Algorithm constructor.
      * @param chromosomeLength The length in genes of each chromosome.
      * @param initialPopulation The population length.
@@ -114,11 +119,13 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      *                 them, just use bitwise or with the symbolic constans provided.
      *                 E.g.: GeneticAlgorithm.UNIFORMCROSSOVER|GeneticAlgorithm.TOURNAMENTSELECTION|GeneticAlgorithm.ELITISM
      */
+
+
+
     public GeneticAlgorithm(int chromosomeLength, int initialPopulation, int settings){
         chromosomes = new ArrayList<>();
         for(int c = 0; c < initialPopulation; ++c){
             Chromosome chromosome = new Chromosome(chromosomeLength);
-            chromosome.randomizeChromosomeGenes();
             chromosomes.add(chromosome);
         }
 
@@ -147,12 +154,16 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * @return When the algorithm ends, the best chromosome.
      */
     public Chromosome run() throws DeadPopulationException {
+        for (int i = 0; i < chromosomes.size(); ++i) {
+            chromosomes.get(i).randomizeChromosomeGenes();
+        }
+
         evaluation();
 
         double averageValue = getAverageValue();
         System.out.println("Start: Best Value: " + getBestChromosome().getValue() + " Average Value: " + averageValue);
 
-        while(true){
+        while(!stopCondition()) {
             checkDeadPopulation();
             breeding();
             mutation();
@@ -160,10 +171,11 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
 
             averageValue = getAverageValue();
             incrementIterations();
-            System.out.println("Iteration " + getIterations() + ": Best Value: " + getBestChromosome().getValue() + " Average Value: " + averageValue);
-            if(stopCondition())
-                return getBestChromosome();
-            }
+            Chromosome chromosome = getBestChromosome();
+            System.out.println("Iteration " + getIterations() + ": Best Value: " + chromosome.getValue() + " Average Value: " + averageValue);
+        }
+
+        return bestChromosomeOverall;
     }
 
     private void checkDeadPopulation() throws DeadPopulationException {
@@ -336,6 +348,11 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
                 bestChromosomeValue = chromosome.getValue();
                 bestChromosome = chromosome;
             }
+        }
+
+
+        if (bestChromosomeOverall == null || bestChromosome.getValue() > bestChromosomeOverall.getValue()) {
+            bestChromosomeOverall = (Chromosome) bestChromosome.clone();
         }
 
         return bestChromosome;
