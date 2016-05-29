@@ -65,41 +65,15 @@ public class Main {
 
     */
 
-    public void runChosenAlgorithm() {
-        Main mainObject = Main.getInstance();
-
-        //TODO load custom options into dataset
-        DataSet dataSet = new DataSet(data, 1000, 500, 50000, 40);
-
-        GeneticAlgorithmTest ga = new GeneticAlgorithmTest(dataSet, 2000, GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
-        Chromosome bestChromosome = null;
-
-        boolean sucessful = false;
-        while (!sucessful) {
-            try {
-                bestChromosome = ga.run();
-                sucessful = true;
-            } catch (DeadPopulationException e) {
-                System.out.println("The testing population is dead");
-            }
-        }
-        System.out.println("Solution: " + bestChromosome);
-        for (City city : dataSet.getTribunals(bestChromosome)) {
-            System.out.println(city.getName());
-        }
-        System.out.println("Evaluation: " + dataSet.evaluate(bestChromosome));
-        System.out.println("Value: " + bestChromosome.getValue());
-    }
-
-    public static testUI getGraphicalInterface() {
+    public testUI getGraphicalInterface() {
         return graphicalInterface;
     }
 
-    public static Data getData() {
+    public Data getData() {
         return data;
     }
 
-    public static String getFileName() {
+    public String getFileName() {
         return fileName;
     }
 }

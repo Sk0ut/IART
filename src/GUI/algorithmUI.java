@@ -1,6 +1,9 @@
 package GUI;
 
+import Core.AlgorithmRunner;
 import cityparser.City;
+import com.oracle.deploy.update.Updater;
+import com.sun.org.apache.xml.internal.security.algorithms.JCEMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +11,7 @@ import javax.swing.*;
 import javax.swing.JFrame;
 
 import java.awt.*;
+import java.util.concurrent.*;
 
 public class AlgorithmUI{
 
@@ -22,8 +26,12 @@ public class AlgorithmUI{
     private JList infoList;
     private JScrollPane solutionPane;
 
-    public AlgorithmUI(){
+    private AlgorithmRunner runner;
+    private ScheduledFuture<?> updateTask;
+
+    public AlgorithmUI(AlgorithmRunner runner){
         algorithmFrame = new JFrame("IART");
+        this.runner = runner;
     }
 
     public void render() {
@@ -35,7 +43,21 @@ public class AlgorithmUI{
 
 
         algorithmFrame.setResizable(false);
+
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        updateTask =  executor.scheduleAtFixedRate((Runnable) () -> {
+            boolean stop = AlgorithmUI.this.runner.isFinished();
+            List<City> cityList = AlgorithmUI.this.runner.getCurrentSolution();
+            double fitnessValue = AlgorithmUI.this.runner.getCurrentFitnessValue();
+            AlgorithmUI.this.updateSolution(cityList, fitnessValue);
+
+            if (stop) {
+                AlgorithmUI.this.updateTask.cancel(true);
+            }
+        }, 1000, 1000, TimeUnit.MILLISECONDS);
+
         algorithmFrame.setVisible(true);
+
     }
 
     private void createFrameLayout(){

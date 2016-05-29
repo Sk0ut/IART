@@ -5,11 +5,13 @@ public class CustomOptions {
     private String algorithm;
     private int numberTribunals;
     private int budget;
+    private int maxDistance;
 
     public CustomOptions(){
         algorithm = "genetic";
         numberTribunals = 50;
         budget = 50;
+        maxDistance = 50000;
     }
 
     public int getNumberTribunals() {
@@ -34,5 +36,13 @@ public class CustomOptions {
 
     public void setBudget(int budget) {
         this.budget = budget;
+    }
+
+    public int getMaxDistance() {
+        return maxDistance;
+    }
+
+    public void setMaxDistance(int maxDistance) {
+        this.maxDistance = maxDistance;
     }
 }

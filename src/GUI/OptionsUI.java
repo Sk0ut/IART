@@ -15,6 +15,7 @@ public class OptionsUI extends JDialog{
 
     private JSpinner courtNumberSpinner;
     private JSpinner budgetSpinner;
+    private JSpinner maxDistanceSpinner;
 
     private JRadioButton geneticButton;
     private JRadioButton simmulatedAnnealingButton;
@@ -95,6 +96,26 @@ public class OptionsUI extends JDialog{
         constraints.gridy = 2;
         optionsPanel.add(budgetSpinner, constraints);
 
+
+
+        JLabel distanceLabel = new JLabel("Distance (in km)");
+        insets = new Insets(8, 8, 8, 0);
+        constraints.insets = insets;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        optionsPanel.add(distanceLabel, constraints);
+
+        maxDistanceSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 500, 10));
+        insets = new Insets(8, 0, 8, 8);
+        constraints.insets = insets;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 3;
+        optionsPanel.add(maxDistanceSpinner, constraints);
+
+
+
         Dimension dialogDimension = this.getSize();
 
         saveButton = new JButton("Save");
@@ -102,7 +123,7 @@ public class OptionsUI extends JDialog{
         constraints.insets = insets;
         constraints.fill = GridBagConstraints.VERTICAL;
         constraints.gridx = 0;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         constraints.gridwidth = 2;
         optionsPanel.add(saveButton, constraints);
 
@@ -111,7 +132,7 @@ public class OptionsUI extends JDialog{
         constraints.insets = insets;
         constraints.fill = GridBagConstraints.VERTICAL;
         constraints.gridx = 2;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         constraints.gridwidth = 2;
         optionsPanel.add(cancelButton, constraints);
 
@@ -139,6 +160,7 @@ public class OptionsUI extends JDialog{
                 currentOptions.setAlgorithm(geneticButton.isSelected() ? "genetic" : "simulated annealing");
                 currentOptions.setNumberTribunals((Integer) courtNumberSpinner.getValue());
                 currentOptions.setBudget((Integer) budgetSpinner.getValue());
+                currentOptions.setMaxDistance((Integer) maxDistanceSpinner.getValue() * 1000);
                 dispose();
             }
         });
@@ -159,6 +181,7 @@ public class OptionsUI extends JDialog{
 
         courtNumberSpinner.setValue(currentOptions.getNumberTribunals());
         budgetSpinner.setValue(currentOptions.getBudget());
+        maxDistanceSpinner.setValue(currentOptions.getMaxDistance());
 
     }
 }

@@ -1,6 +1,9 @@
 package GUI;
 
+import Core.AlgorithmRunner;
+import Core.GeneticAlgorithmRunner;
 import Core.Main;
+import algorithms.GeneticAlgorithm;
 import cityparser.CityParser;
 
 import javax.swing.*;
@@ -77,15 +80,19 @@ public class testUI {
         generateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main mainObject = Main.getInstance();
-                mainObject.runChosenAlgorithm();
+                AlgorithmRunner runner;
+                Main main = Main.getInstance();
+                if(currentOptions.getAlgorithm() == "genetic")
+                    runner = new GeneticAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
+                    currentOptions.getMaxDistance(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
+                else
+                    runner = new GeneticAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
+                            currentOptions.getMaxDistance(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
 
-                AlgorithmUI algorithmUI = new AlgorithmUI();
+                new Thread(runner).start();
+
+                AlgorithmUI algorithmUI = new AlgorithmUI(runner);
                 algorithmUI.render();
-                CityParser parser = new CityParser();
-
-                algorithmUI.updateSolution(parser.getData("cities.ser").getCities(), 1000);
-
             }
         });
 
