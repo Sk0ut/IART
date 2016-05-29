@@ -18,7 +18,7 @@ public class Main {
 
         CityParser parser = new CityParser();
         Data data = parser.getData(fileName);
-        DataSet dataSet = new DataSet(data, 10000, 50, 10000, 25);
+        DataSet dataSet = new DataSet(data, 1000, 500, 10000, 25);
         Chromosome chromosome = new Chromosome(dataSet.chromosomeLength());
         /*
         if (data.getCities() != null) {
@@ -31,7 +31,7 @@ public class Main {
             }
             System.out.println("Nº total de concelhos: " + data.getCities().size());
         }*/
-            GeneticAlgorithmTest ga = new GeneticAlgorithmTest(dataSet, 50000, GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
+        GeneticAlgorithmTest ga = new GeneticAlgorithmTest(dataSet, 50000, GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
         Chromosome bestChromosome = null;
 
         boolean sucessful = false;
