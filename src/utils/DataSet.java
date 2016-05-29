@@ -139,12 +139,17 @@ public class DataSet implements ChromosomeEvaluator, StateEvaluator {
     public List<City> getTribunals(Chromosome chromosome) {
         BitSet tribunalsBitSet = getTribunalsBitSet(chromosome);
         List<City> tribunals = new LinkedList<>();
-
         for (int i = 0; i < data.getCities().size(); ++i) {
             if (tribunalsBitSet.get(i))
                 tribunals.add(data.getCities().get(i));
         }
+        return tribunals;
+    }
 
+    public List<City> getTribunals(State state) {
+        List<City> tribunals = new LinkedList<>();
+        for (int i = 0; i < state.numTribunals(); ++i)
+            tribunals.add(data.getCities().get(state.getTribunal(i)));
         return tribunals;
     }
 
