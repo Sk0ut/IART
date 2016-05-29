@@ -157,10 +157,11 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * @return When the algorithm ends, the best chromosome.
      */
     public Chromosome run() throws DeadPopulationException {
+        bestChromosomeOverall = null;
         for (Chromosome chromosome : chromosomes) {
             chromosome.randomizeChromosomeGenes();
+            chromosome.setValue(evaluate(chromosome));
         }
-        bestChromosomeOverall = null;
         evaluation();
 
         double averageValue = getAverageValue();
