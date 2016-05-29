@@ -1,14 +1,10 @@
 package Core;
 
-import GUI.AlgorithmUI;
-import algorithms.DeadPopulationException;
-import algorithms.GeneticAlgorithm;
 import algorithms.SimmulatedAnnealing;
 import cityparser.City;
 import cityparser.Data;
 import utils.*;
 
-import java.util.LinkedList;
 import java.util.List;
 public class SimmulatedAnnealingAlgorithmRunner extends  AlgorithmRunner{
 

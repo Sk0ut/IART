@@ -1,14 +1,11 @@
 package Core;
 
-import GUI.AlgorithmUI;
 import algorithms.DeadPopulationException;
-import algorithms.GeneticAlgorithm;
 import cityparser.City;
 import cityparser.Data;
 import utils.Chromosome;
 import utils.DataSet;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**

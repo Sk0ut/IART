@@ -4,8 +4,6 @@ import Core.AlgorithmRunner;
 import Core.GeneticAlgorithmRunner;
 import Core.Main;
 import Core.SimmulatedAnnealingAlgorithmRunner;
-import algorithms.GeneticAlgorithm;
-import cityparser.CityParser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -93,7 +91,7 @@ public class testUI {
 
                 new Thread(runner).start();
 
-                AlgorithmUI algorithmUI = new AlgorithmUI(runner);
+                AlgorithUI algorithmUI = new AlgorithUI(runner);
                 algorithmUI.render();
             }
         });

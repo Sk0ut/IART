@@ -2,8 +2,6 @@ package GUI;
 
 import Core.AlgorithmRunner;
 import cityparser.City;
-import com.oracle.deploy.update.Updater;
-import com.sun.org.apache.xml.internal.security.algorithms.JCEMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +11,7 @@ import javax.swing.JFrame;
 import java.awt.*;
 import java.util.concurrent.*;
 
-public class AlgorithmUI{
+public class AlgorithUI {
 
     private JFrame algorithmFrame;
     private JPanel algorithmPanel;
@@ -30,7 +28,7 @@ public class AlgorithmUI{
     private AlgorithmRunner runner;
     private ScheduledFuture<?> updateTask;
 
-    public AlgorithmUI(AlgorithmRunner runner){
+    public AlgorithUI(AlgorithmRunner runner){
         algorithmFrame = new JFrame("IART");
         this.runner = runner;
     }
@@ -47,17 +45,17 @@ public class AlgorithmUI{
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         updateTask =  executor.scheduleAtFixedRate((Runnable) () -> {
-            boolean stop = AlgorithmUI.this.runner.isFinished();
-            List<City> cityList = AlgorithmUI.this.runner.getCurrentSolution();
+            boolean stop = AlgorithUI.this.runner.isFinished();
+            List<City> cityList = AlgorithUI.this.runner.getCurrentSolution();
             if (cityList == null)
                 return;
-            double fitnessValue = AlgorithmUI.this.runner.getCurrentFitnessValue();
+            double fitnessValue = AlgorithUI.this.runner.getCurrentFitnessValue();
 
-            int iteration = AlgorithmUI.this.runner.getCurrentIteration();
-            AlgorithmUI.this.updateSolution(cityList, fitnessValue, iteration, stop);
+            int iteration = AlgorithUI.this.runner.getCurrentIteration();
+            AlgorithUI.this.updateSolution(cityList, fitnessValue, iteration, stop);
 
             if (stop) {
-                AlgorithmUI.this.updateTask.cancel(true);
+                AlgorithUI.this.updateTask.cancel(true);
             }
         }, 1000, 1000, TimeUnit.MILLISECONDS);
 
