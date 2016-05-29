@@ -91,7 +91,7 @@ public class testUI {
 
                 new Thread(runner).start();
 
-                AlgorithUI algorithmUI = new AlgorithUI(runner);
+                AlgorithmUI algorithmUI = new AlgorithmUI(runner);
                 algorithmUI.render();
             }
         });

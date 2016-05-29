@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import java.awt.*;
 import java.util.concurrent.*;
 
-public class AlgorithUI {
+public class AlgorithmUI {
 
     private JFrame algorithmFrame;
     private JPanel algorithmPanel;
@@ -28,7 +28,7 @@ public class AlgorithUI {
     private AlgorithmRunner runner;
     private ScheduledFuture<?> updateTask;
 
-    public AlgorithUI(AlgorithmRunner runner){
+    public AlgorithmUI(AlgorithmRunner runner){
         algorithmFrame = new JFrame("IART");
         this.runner = runner;
     }
@@ -45,17 +45,17 @@ public class AlgorithUI {
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         updateTask =  executor.scheduleAtFixedRate((Runnable) () -> {
-            boolean stop = AlgorithUI.this.runner.isFinished();
-            List<City> cityList = AlgorithUI.this.runner.getCurrentSolution();
+            boolean stop = AlgorithmUI.this.runner.isFinished();
+            List<City> cityList = AlgorithmUI.this.runner.getCurrentSolution();
             if (cityList == null)
                 return;
-            double fitnessValue = AlgorithUI.this.runner.getCurrentFitnessValue();
+            double fitnessValue = AlgorithmUI.this.runner.getCurrentFitnessValue();
 
-            int iteration = AlgorithUI.this.runner.getCurrentIteration();
-            AlgorithUI.this.updateSolution(cityList, fitnessValue, iteration, stop);
+            int iteration = AlgorithmUI.this.runner.getCurrentIteration();
+            AlgorithmUI.this.updateSolution(cityList, fitnessValue, iteration, stop);
 
             if (stop) {
-                AlgorithUI.this.updateTask.cancel(true);
+                AlgorithmUI.this.updateTask.cancel(true);
             }
         }, 1000, 1000, TimeUnit.MILLISECONDS);
 
