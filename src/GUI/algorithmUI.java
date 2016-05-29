@@ -22,6 +22,7 @@ public class AlgorithmUI{
 
     private JPanel infoPanel;
     private JLabel bestFitnessLabel;
+    private JLabel iterationsLabel;
     private JLabel totalCostLabel;
     private JList infoList;
     private JScrollPane solutionPane;
@@ -52,7 +53,8 @@ public class AlgorithmUI{
                 return;
             double fitnessValue = AlgorithmUI.this.runner.getCurrentFitnessValue();
 
-            AlgorithmUI.this.updateSolution(cityList, fitnessValue, stop);
+            int iteration = AlgorithmUI.this.runner.getCurrentIteration();
+            AlgorithmUI.this.updateSolution(cityList, fitnessValue, iteration, stop);
 
             if (stop) {
                 AlgorithmUI.this.updateTask.cancel(true);
@@ -79,19 +81,23 @@ public class AlgorithmUI{
         constraints.gridwidth = 5;
         algorithmPanel.add(mapPanel, constraints);
 
-        bestFitnessLabel = new JLabel("Best Chromosome Fitness: ");
+        bestFitnessLabel = new JLabel("Best Fitness: ");
         constraints.weighty = 0.05;
         constraints.gridwidth = 1;
         constraints.gridx = 0;
         constraints.gridy = 0;
         infoPanel.add(bestFitnessLabel, constraints);
 
-        totalCostLabel = new JLabel("Total Cost: ");
+        iterationsLabel = new JLabel("Current Iteration: ");
         constraints.gridy = 1;
+        infoPanel.add(iterationsLabel, constraints);
+
+        totalCostLabel = new JLabel("Total Cost: ");
+        constraints.gridy = 2;
         infoPanel.add(totalCostLabel, constraints);
 
         JLabel tribunalLocationLabel = new JLabel("Tribunal Locations");
-        constraints.gridy = 2;
+        constraints.gridy = 3;
         infoPanel.add(tribunalLocationLabel, constraints);
 
         //TODO create proper list
@@ -100,7 +106,7 @@ public class AlgorithmUI{
         solutionPane = new JScrollPane(infoList);
         solutionPane.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
         constraints.weighty = 1;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         constraints.gridheight = 100;
         constraints.insets = new Insets(0, 0, 25, 25);
         infoPanel.add(solutionPane, constraints);
@@ -114,8 +120,9 @@ public class AlgorithmUI{
         algorithmFrame.add(algorithmPanel);
     }
 
-    public void updateSolution(List<City> cityList, double fitnessValue, boolean finished) {
+    public void updateSolution(List<City> cityList, double fitnessValue, int iteration, boolean finished) {
         bestFitnessLabel.setText("Best Chromosome Fitness: " + fitnessValue);
+        iterationsLabel.setText("Current interation: " + iteration);
 
         ArrayList<String> arrayList = new ArrayList<>();
         int totalCost = 0;

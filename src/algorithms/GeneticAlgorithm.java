@@ -428,4 +428,6 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
     public Chromosome getBestChromosomeOverall() {
         return bestChromosomeOverall;
     }
+
+    protected abstract double evaluate(Chromosome chromosome);
 }

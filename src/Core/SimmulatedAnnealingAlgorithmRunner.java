@@ -6,9 +6,7 @@ import algorithms.GeneticAlgorithm;
 import algorithms.SimmulatedAnnealing;
 import cityparser.City;
 import cityparser.Data;
-import utils.Chromosome;
-import utils.DataSet;
-import utils.State;
+import utils.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +22,9 @@ public class SimmulatedAnnealingAlgorithmRunner extends  AlgorithmRunner{
 
         dataSet = new DataSet(data, 1000, 500, maxDistance, numTribunals);
         finished = false;
+
+        OneRandomTribunalStateTransition function = new OneRandomTribunalStateTransition(numTribunals, data.getCities().size());
+        simmulatedAnnealing = new SimmulatedAnnealing(function, 50000, 0.001, dataSet);
     }
 
     @Override
@@ -55,13 +56,9 @@ public class SimmulatedAnnealingAlgorithmRunner extends  AlgorithmRunner{
 
         boolean successful = false;
         while (!successful) {
-            State initialState = new State(getNumTribunals());
-            simmulatedAnnealing.run(initialState);
+            simmulatedAnnealing.run();
             successful = true;
         }
         finished = true;
     }
-}
-
-
 }

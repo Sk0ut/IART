@@ -5,10 +5,12 @@ import java.util.Random;
 
 public class OneRandomTribunalStateTransition extends StateTransitionFunction{
     private int maxIndex;
+    private int numTribunals;
     private Random randomizer;
 
-    public OneRandomTribunalStateTransition(int maxIndex) {
+    public OneRandomTribunalStateTransition(int numTribunals, int maxIndex) {
         this.maxIndex = maxIndex;
+        this.numTribunals = numTribunals;
         randomizer = new Random();
     }
 
@@ -35,5 +37,16 @@ public class OneRandomTribunalStateTransition extends StateTransitionFunction{
         newState.setTribunal(selectedTribunal, newCity);
 
         return newState;
+    }
+
+    @Override
+    public State initialState() {
+        State state = new State(numTribunals);
+
+        for (int i = 0; i < numTribunals; ++i) {
+            state.setTribunal(i, i);
+        }
+
+        return state;
     }
 }

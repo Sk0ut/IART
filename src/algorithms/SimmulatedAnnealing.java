@@ -2,23 +2,27 @@ package algorithms;
 
 import utils.OptimizationAlgorithm;
 import utils.State;
+import utils.StateEvaluator;
 import utils.StateTransitionFunction;
 
-public abstract class SimmulatedAnnealing extends OptimizationAlgorithm {
+public class SimmulatedAnnealing extends OptimizationAlgorithm {
     private final StateTransitionFunction transitionFunction;
     private double initialTemperature;
     private double coolingRate;
     private State bestState;
     private double currentTemperature;
+    private StateEvaluator evaluator;
 
-    public SimmulatedAnnealing(StateTransitionFunction transitionFunction, double initialTemperature, double coolingRate){
+    public SimmulatedAnnealing(StateTransitionFunction transitionFunction, double initialTemperature, double coolingRate, StateEvaluator evaluator){
         this.transitionFunction = transitionFunction;
         this.initialTemperature = initialTemperature;
         this.coolingRate = coolingRate;
+        this.evaluator = evaluator;
     }
 
-    public State run(State initialState){
-        State currentState = initialState;
+    public State run(){
+        State currentState = transitionFunction.initialState();
+        currentState.setValue(evaluator.evaluate(currentState));
         currentTemperature = initialTemperature;
         resetIterations();
         updateBestState(currentState);
@@ -29,6 +33,7 @@ public abstract class SimmulatedAnnealing extends OptimizationAlgorithm {
                 currentState = newState;
             currentTemperature *= (1-coolingRate);
             incrementIterations();
+            currentState.setValue(evaluator.evaluate(currentState));
             updateBestState(currentState);
         }
 
@@ -36,7 +41,7 @@ public abstract class SimmulatedAnnealing extends OptimizationAlgorithm {
     }
 
     private void updateBestState(State newState) {
-        if (newState.getValue() > bestState.getValue()){
+        if (bestState == null || newState.getValue() > bestState.getValue()){
             bestState = (State) newState.clone();
         }
     }

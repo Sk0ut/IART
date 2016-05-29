@@ -181,7 +181,7 @@ public class OptionsUI extends JDialog{
 
         courtNumberSpinner.setValue(currentOptions.getNumberTribunals());
         populationSpinner.setValue(currentOptions.getPopulationSize());
-        maxDistanceSpinner.setValue(currentOptions.getMaxDistance());
+        maxDistanceSpinner.setValue(currentOptions.getMaxDistance() / 1000);
 
     }
 }

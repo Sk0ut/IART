@@ -15,6 +15,8 @@ public abstract class OptimizationAlgorithm {
         return iterations;
     }
 
+
+
     /**
      * The stop condition for the algorithm. Abstract method.
      * @return True if the stop condition has already been met, false otherwise.
