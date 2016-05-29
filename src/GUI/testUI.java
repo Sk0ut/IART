@@ -1,5 +1,9 @@
 package GUI;
 
+import Core.AlgorithmRunner;
+import Core.GeneticAlgorithmRunner;
+import Core.Main;
+import algorithms.GeneticAlgorithm;
 import cityparser.CityParser;
 
 import javax.swing.*;
@@ -24,10 +28,6 @@ public class testUI {
         mainFrame = new JFrame("IART");
         currentOptions = new CustomOptions();
 
-    }
-    public static void main(String[] args) {
-        testUI GUI = new testUI();
-        GUI.render();
     }
 
     public void render() {
@@ -80,13 +80,19 @@ public class testUI {
         generateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO generate results action
-                AlgorithmUI algorithmUI = new AlgorithmUI();
-                algorithmUI.render();
-                CityParser parser = new CityParser();
-                algorithmUI.updateSolution(parser.getData("cities.ser").getCities(), 1000);
+                AlgorithmRunner runner;
+                Main main = Main.getInstance();
+                if(currentOptions.getAlgorithm() == "genetic")
+                    runner = new GeneticAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
+                    currentOptions.getMaxDistance(), currentOptions.getPopulationSize(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
+                else
+                    runner = new GeneticAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
+                            currentOptions.getMaxDistance(), currentOptions.getPopulationSize(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
 
-                System.out.println("Generating solution...");
+                new Thread(runner).start();
+
+                AlgorithmUI algorithmUI = new AlgorithmUI(runner);
+                algorithmUI.render();
             }
         });
 
@@ -117,5 +123,14 @@ public class testUI {
                 System.exit(0);
             }
         });
+    }
+
+
+    public CustomOptions getCurrentOptions() {
+        return currentOptions;
+    }
+
+    public void setCurrentOptions(CustomOptions options) {
+        currentOptions = options;
     }
 }

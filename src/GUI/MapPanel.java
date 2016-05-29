@@ -3,6 +3,8 @@ package GUI;
 import cityparser.City;
 
 import javax.imageio.ImageIO;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.util.List;
 
 import javax.swing.*;
@@ -57,17 +59,14 @@ public class MapPanel extends JPanel {
         add(mapLabel);
     }
 
-    public void addCityMarkers(List<City> cityList) {
-        int mapWidth = unchangedMap.getWidth();
-        int mapHeight = unchangedMap.getHeight();
-        System.out.println("Wid: " + mapWidth);
-        System.out.println("height: " + mapHeight);
-
-        currentMap = unchangedMap.getSubimage(0, 0, unchangedMap.getWidth(), unchangedMap.getHeight());
+    public void addCityMarkers(List<City> cityList, boolean finished) {
+        currentMap = deepCopy(unchangedMap);
 
 
         Graphics mapGraphics = currentMap.getGraphics();
-        mapGraphics.setColor(new Color(128, 0, 128));
+        if(finished)
+            mapGraphics.setColor(Color.green);
+        else mapGraphics.setColor(new Color(128, 0, 128));
 
 
         double latitude;
@@ -90,7 +89,6 @@ public class MapPanel extends JPanel {
 
             pixelX = povoaX + (longitude - povoaLong) * xScale;
             pixelY = povoaY + (latitude - povoaLat) * yScale;
-            System.out.println("pixelX: " + pixelX);
             mapGraphics.fillOval((int) pixelX - DIAMETER /2, (int) pixelY- DIAMETER /2, DIAMETER, DIAMETER);
         }
 
@@ -111,7 +109,6 @@ public class MapPanel extends JPanel {
         double coordDiff = long2 - long1;
 
         double xScale = pixelDiff / coordDiff;
-        System.out.println("xScale: " + xScale);
 
         return xScale;
     }
@@ -124,9 +121,13 @@ public class MapPanel extends JPanel {
         double pixelDiff = y2 - y1;
         double coordDiff = lat2 - lat1;
         double yScale = pixelDiff / coordDiff;
-        System.out.println("ySclae: " + yScale);
         return yScale;
     }
 
-
+    static BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = bi.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    }
 }

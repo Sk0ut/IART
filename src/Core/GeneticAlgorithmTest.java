@@ -1,3 +1,5 @@
+package Core;
+
 import algorithms.*;
 import utils.Chromosome;
 import utils.ChromosomeEvaluator;
@@ -22,6 +24,6 @@ public class GeneticAlgorithmTest extends GeneticAlgorithm {
 
     @Override
     public boolean stopCondition() {
-        return getIterations() > 20;
+        return getIterations() > 50;
     }
 }

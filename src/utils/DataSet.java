@@ -110,6 +110,7 @@ public class DataSet implements ChromosomeEvaluator, StateEvaluator {
         return result;
     }
 
+
     private BitSet getTribunalsBitSet(Chromosome chromosome) {
         BitSet bitSet = chromosome.getGenome();
         BitSet citiesWithTribunals = new BitSet();

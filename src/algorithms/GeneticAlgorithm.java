@@ -111,7 +111,7 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
     /**
      * The best chromosome in all iterations.
      */
-    Chromosome bestChromosomeOverall = null;
+    private Chromosome bestChromosomeOverall;
 
     /**
      * The Genetic Algorithm constructor.
@@ -150,6 +150,7 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
 
         if((settings & ELITISM) != 0)
             elitismSize = 1;
+        bestChromosomeOverall = null;
     }
 
     /**
@@ -165,7 +166,8 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
         evaluation();
 
         double averageValue = getAverageValue();
-        System.out.println("Start: Best Value: " + getBestChromosome().getValue() + " Average Value: " + averageValue);
+        Chromosome chromosome = getBestChromosome();
+        System.out.println("Start: Best Value: " + chromosome.getValue() + " Average Value: " + averageValue);
 
         resetIterations();
         while(!stopCondition()) {
@@ -176,7 +178,7 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
 
             averageValue = getAverageValue();
             incrementIterations();
-            Chromosome chromosome = getBestChromosome();
+            chromosome = getBestChromosome();
             System.out.println("Iteration " + getIterations() + ": Best Value: " + chromosome.getValue() + " Average Value: " + averageValue + " Population Size: " + chromosomes.size());
         }
 
@@ -421,5 +423,9 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
             currentValue += addition;
             probabilities.add(currentValue);
         }
+    }
+
+    public Chromosome getBestChromosomeOverall() {
+        return bestChromosomeOverall;
     }
 }
