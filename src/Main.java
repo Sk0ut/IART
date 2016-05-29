@@ -31,7 +31,7 @@ public class Main {
             }
             System.out.println("Nº total de concelhos: " + data.getCities().size());
         }*/
-            GeneticAlgorithmTest ga = new GeneticAlgorithmTest(dataSet, 50000, GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
+            GeneticAlgorithmTest ga = new GeneticAlgorithmTest(dataSet, 20000, GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
         Chromosome bestChromosome = null;
 
         boolean sucessful = false;

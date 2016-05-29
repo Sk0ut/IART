@@ -14,7 +14,6 @@ public class testUI {
 
     private JButton generateButton;
     private JButton optionsButton;
-    private JButton updateButton;
     private JButton aboutButton;
     private JButton exitButton;
 
@@ -63,17 +62,13 @@ public class testUI {
         constraints.gridy = 1;
         pane.add(optionsButton, constraints);
 
-        updateButton = new JButton("Update Info");
-        constraints.gridy = 2;
-        pane.add(updateButton, constraints);
-
         aboutButton = new JButton("About");
-        constraints.gridy = 3;
+        constraints.gridy = 2;
         pane.add(aboutButton, constraints);
 
         exitButton = new JButton("Exit");
         constraints.gridx = 0;
-        constraints.gridy = 4;
+        constraints.gridy = 3;
         pane.add(exitButton, constraints);
 
 
@@ -102,13 +97,6 @@ public class testUI {
                 OptionsUI options = new OptionsUI(mainFrame, "Options", true, currentOptions);
                 options.render();
 
-            }
-        });
-
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO update information action
             }
         });
 
