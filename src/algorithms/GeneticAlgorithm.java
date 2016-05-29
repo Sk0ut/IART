@@ -154,13 +154,9 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * @return When the algorithm ends, the best chromosome.
      */
     public Chromosome run() throws DeadPopulationException {
-        int i = 0;
-        while (i < chromosomes.size()) {
-            //System.out.println("Generating chromosome " + i + "/" + chromosomes.size());
-            chromosomes.get(i).randomizeChromosomeGenes();
-            chromosomes.get(i).setValue(evaluate(chromosomes.get(i)));
-            //if (chromosomes.get(i).getValue() > 0)
-                ++i;
+        for (Chromosome chromosome : chromosomes) {
+            chromosome.randomizeChromosomeGenes();
+            chromosome.setValue(evaluate(chromosome));
         }
 
         double averageValue = getAverageValue();
@@ -343,7 +339,7 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * Returns the best chromosome from the current generation.
      * @return The best chromosome.
      */
-    public Chromosome getBestChromosome() {
+    private Chromosome getBestChromosome() {
         double bestChromosomeValue = -1;
         Chromosome bestChromosome = null;
 

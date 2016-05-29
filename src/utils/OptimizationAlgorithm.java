@@ -1,20 +1,14 @@
 package utils;
 
 public abstract class OptimizationAlgorithm {
-
-    private Chromosome bestChromosome;
     private int iterations = 0;
 
-    public void resetIterations(){
+    protected void resetIterations(){
         iterations = 0;
     }
 
-    public void incrementIterations(){
+    protected void incrementIterations(){
         iterations += 1;
-    }
-
-    public Chromosome getBestChromosome() {
-        return bestChromosome;
     }
 
     public int getIterations() {
