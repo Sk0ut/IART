@@ -75,7 +75,6 @@ public class DataSet implements ChromosomeEvaluator {
         if (chromosome.length() != chromosomeLength())
             return 0;
 
-        String representation = chromosome.toString();
         BitSet citiesWithTribunals = getTribunalsBitSet(chromosome);
 
         if (citiesWithTribunals.cardinality() != numTribunals)
@@ -106,6 +105,7 @@ public class DataSet implements ChromosomeEvaluator {
 
         return result;
     }
+
 
     private BitSet getTribunalsBitSet(Chromosome chromosome) {
         BitSet bitSet = chromosome.getGenome();

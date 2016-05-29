@@ -1,3 +1,5 @@
+package Core;
+
 import algorithms.*;
 import utils.Chromosome;
 import utils.ChromosomeEvaluator;

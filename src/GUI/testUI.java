@@ -1,5 +1,6 @@
 package GUI;
 
+import Core.Main;
 import cityparser.CityParser;
 
 import javax.swing.*;
@@ -24,10 +25,6 @@ public class testUI {
         mainFrame = new JFrame("IART");
         currentOptions = new CustomOptions();
 
-    }
-    public static void main(String[] args) {
-        testUI GUI = new testUI();
-        GUI.render();
     }
 
     public void render() {
@@ -80,13 +77,15 @@ public class testUI {
         generateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO generate results action
+                Main mainObject = Main.getInstance();
+                mainObject.runChosenAlgorithm();
+
                 AlgorithmUI algorithmUI = new AlgorithmUI();
                 algorithmUI.render();
                 CityParser parser = new CityParser();
+
                 algorithmUI.updateSolution(parser.getData("cities.ser").getCities(), 1000);
 
-                System.out.println("Generating solution...");
             }
         });
 
@@ -117,5 +116,14 @@ public class testUI {
                 System.exit(0);
             }
         });
+    }
+
+
+    public CustomOptions getCurrentOptions() {
+        return currentOptions;
+    }
+
+    public void setCurrentOptions(CustomOptions options) {
+        currentOptions = options;
     }
 }
