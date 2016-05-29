@@ -8,7 +8,7 @@ import java.nio.ByteOrder;
 import java.util.*;
 
 
-public class DataSet implements ChromosomeEvaluator {
+public class DataSet implements ChromosomeEvaluator, StateEvaluator {
     private Data data;
     private double citizenValue;
     private double citizenCost;
@@ -70,13 +70,16 @@ public class DataSet implements ChromosomeEvaluator {
     }
 
     public double evaluate(Chromosome chromosome) {
-        double result = 0;
-
         if (chromosome.length() != chromosomeLength())
             return 0;
 
-        String representation = chromosome.toString();
         BitSet citiesWithTribunals = getTribunalsBitSet(chromosome);
+
+        return evaluateTribunalBitSet(citiesWithTribunals);
+    }
+
+    private double evaluateTribunalBitSet(BitSet citiesWithTribunals) {
+        double result  = 0;
 
         if (citiesWithTribunals.cardinality() != numTribunals)
             return 0;
@@ -84,7 +87,7 @@ public class DataSet implements ChromosomeEvaluator {
         for (int i = 0; i < data.getCities().size(); ++i) {
             City city = data.getCities().get(i);
             if (citiesWithTribunals.get(i)) {
-                Integer constructionCost = Data.getConstructionCost(city.getName());
+                Integer constructionCost = city.getCost();
                 result += city.getPopulation() * citizenValue - constructionCost;
             } else {
                 double shortestDistance = Double.POSITIVE_INFINITY;
@@ -122,6 +125,16 @@ public class DataSet implements ChromosomeEvaluator {
         return citiesWithTribunals;
     }
 
+    private BitSet getTribunalsBitSet(State state) {
+        BitSet citiesWithTribunals = new BitSet();
+
+        for (int i = 0; i < numberOfGenes(); ++i) {
+            citiesWithTribunals.set(state.getTribunal(i));
+        }
+
+        return citiesWithTribunals;
+    }
+
     public List<City> getTribunals(Chromosome chromosome) {
         BitSet tribunalsBitSet = getTribunalsBitSet(chromosome);
         List<City> tribunals = new LinkedList<>();
@@ -132,5 +145,15 @@ public class DataSet implements ChromosomeEvaluator {
         }
 
         return tribunals;
+    }
+
+    @Override
+    public double evaluate(State state) {
+        if (state.numTribunals() != numTribunals)
+            return 0;
+
+        BitSet citiesWithTribunals = getTribunalsBitSet(state);
+
+        return evaluateTribunalBitSet(citiesWithTribunals);
     }
 }

@@ -1,43 +1,56 @@
 package algorithms;
 
-import utils.Chromosome;
 import utils.OptimizationAlgorithm;
+import utils.State;
+import utils.StateTransitionFunction;
 
-/**
- * Created by Afonso on 21/05/2016.
- */
 public abstract class SimmulatedAnnealing extends OptimizationAlgorithm {
-    private double temperature;
+    private final StateTransitionFunction transitionFunction;
+    private double initialTemperature;
     private double coolingRate;
-    private int chromosomeLength;
-    private Chromosome bestChromosome;
+    private State bestState;
+    private double currentTemperature;
 
-    public SimmulatedAnnealing(double temperature, double coolingRate, int chromosomeLength){
-        this.temperature = temperature;
+    public SimmulatedAnnealing(StateTransitionFunction transitionFunction, double initialTemperature, double coolingRate){
+        this.transitionFunction = transitionFunction;
+        this.initialTemperature = initialTemperature;
         this.coolingRate = coolingRate;
-        this.chromosomeLength = chromosomeLength;
     }
 
-    private Chromosome run(){
+    private State run(State initialState){
+        State currentState = initialState;
+        currentTemperature = initialTemperature;
+        resetIterations();
+        updateBestState(currentState);
+
         while(!stopCondition()){
-            Chromosome newCandidate = generateNewChromosome();
-            if (acceptNewChromosome(bestChromosome.getValue(), newCandidate.getValue()))
-                bestChromosome = newCandidate;
-            temperature *= 1-coolingRate;
+            State newState = transitionFunction.next(currentState);
+            if (acceptNewState(currentState, newState, getCurrentTemperature()))
+                currentState = newState;
+            currentTemperature *= (1-coolingRate);
             incrementIterations();
+            updateBestState(currentState);
         }
-        return bestChromosome;
+
+        return bestState;
     }
 
-    private boolean acceptNewChromosome(double bestValue, double candidateValue) {
-        double delta = candidateValue - bestValue;
+    private void updateBestState(State newState) {
+        if (newState.getValue() > bestState.getValue()){
+            bestState = (State) newState.clone();
+        }
+    }
+
+    private boolean acceptNewState(State currentState, State newState, double temperature) {
+        double delta = newState.getValue() - currentState.getValue();
         return delta > 0 || Math.exp(delta / temperature) > Math.random();
     }
 
-    private Chromosome generateNewChromosome() {
-        Chromosome ret = new Chromosome(chromosomeLength);
-        ret.randomizeChromosomeGenes();
-        ret.setValue(evaluate(ret));
-        return ret;
+    public boolean stopCondition() {
+        return getCurrentTemperature() < 0.01;
+    }
+
+    public double getCurrentTemperature() {
+        return currentTemperature;
     }
 }
