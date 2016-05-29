@@ -3,6 +3,7 @@ package GUI;
 import Core.AlgorithmRunner;
 import Core.GeneticAlgorithmRunner;
 import Core.Main;
+import Core.SimmulatedAnnealingAlgorithmRunner;
 import algorithms.GeneticAlgorithm;
 import cityparser.CityParser;
 
@@ -86,8 +87,8 @@ public class testUI {
                     runner = new GeneticAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
                     currentOptions.getMaxDistance(), currentOptions.getPopulationSize(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
                 else
-                    runner = new GeneticAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
-                            currentOptions.getMaxDistance(), currentOptions.getPopulationSize(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
+                    runner = new SimmulatedAnnealingAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
+                            currentOptions.getMaxDistance());
 
                 new Thread(runner).start();
 

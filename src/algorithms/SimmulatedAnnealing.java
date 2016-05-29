@@ -17,7 +17,7 @@ public abstract class SimmulatedAnnealing extends OptimizationAlgorithm {
         this.coolingRate = coolingRate;
     }
 
-    private State run(State initialState){
+    public State run(State initialState){
         State currentState = initialState;
         currentTemperature = initialTemperature;
         resetIterations();
@@ -52,5 +52,9 @@ public abstract class SimmulatedAnnealing extends OptimizationAlgorithm {
 
     public double getCurrentTemperature() {
         return currentTemperature;
+    }
+
+    public State getBestState() {
+        return bestState;
     }
 }
