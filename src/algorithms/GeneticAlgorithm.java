@@ -4,6 +4,9 @@ import cityparser.City;
 import utils.Chromosome;
 import utils.OptimizationAlgorithm;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -154,14 +157,13 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * @return When the algorithm ends, the best chromosome.
      */
     public Chromosome run() throws DeadPopulationException {
+        bestChromosomeOverall = null;
         int i = 0;
         while (i < chromosomes.size()) {
-            //System.out.println("Generating chromosome " + i + "/" + chromosomes.size());
             chromosomes.get(i).randomizeChromosomeGenes();
-            chromosomes.get(i).setValue(evaluate(chromosomes.get(i)));
-            //if (chromosomes.get(i).getValue() > 0)
-                ++i;
+            ++i;
         }
+        evaluation();
 
         double averageValue = getAverageValue();
         System.out.println("Start: Best Value: " + getBestChromosome().getValue() + " Average Value: " + averageValue);
@@ -176,7 +178,7 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
             averageValue = getAverageValue();
             incrementIterations();
             Chromosome chromosome = getBestChromosome();
-            System.out.println("Iteration " + getIterations() + ": Best Value: " + chromosome.getValue() + " Average Value: " + averageValue);
+            System.out.println("Iteration " + getIterations() + ": Best Value: " + chromosome.getValue() + " Average Value: " + averageValue + " Population Size: " + chromosomes.size());
         }
 
         return bestChromosomeOverall;
@@ -196,12 +198,13 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * @return The average value.
      */
     private double getAverageValue() {
-        double averageValue = 0;
+        BigDecimal averageValue = new BigDecimal(0);
         for (Chromosome chromosome : chromosomes) {
-            averageValue += chromosome.getValue();
+            averageValue = averageValue.add(new BigDecimal(chromosome.getValue()));
         }
-        averageValue = averageValue/chromosomes.size();
-        return averageValue;
+        averageValue = averageValue.divide(new BigDecimal(chromosomes.size()));
+
+        return averageValue.doubleValue();
     }
 
     /**
@@ -303,7 +306,7 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
         if(elitismSize != 0) {
             Collections.sort(chromosomes);
             for(int i = 0; i < elitismSize; ++i){
-                newChromosomes.add(chromosomes.get(i));
+                newChromosomes.add(chromosomes.get(chromosomes.size() - i - 1));
             }
         }
 
@@ -322,8 +325,9 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * Evaluates all the new chromosomes after the mutation phase is over or the initial population is created.
      */
     private void evaluation(){
-        for(Chromosome chromosome : chromosomes)
+        for(Chromosome chromosome : chromosomes) {
             chromosome.setValue(Math.max(evaluate(chromosome), 0));
+        }
     }
 
     /**
@@ -405,16 +409,18 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      * Fills the probabilities list with the appropriate values in the roulette selection method.
      */
     private void populateProbabilities() {
-        int totalValue = 0;
-        int currentValue = 0;
+
+        BigDecimal totalValue = new BigDecimal(0);
+        double currentValue = 0;
 
         probabilities = new ArrayList<>();
         for(Chromosome chromosome : chromosomes){
-            totalValue += chromosome.getValue();
+            totalValue = totalValue.add(new BigDecimal(chromosome.getValue()));
         }
         for(Chromosome chromosome : chromosomes){
-            probabilities.add((chromosome.getValue() + currentValue)/totalValue);
-            currentValue += chromosome.getValue();
+            double addition = new BigDecimal(chromosome.getValue()).divide(totalValue, 5, RoundingMode.CEILING).doubleValue();
+            currentValue += addition;
+            probabilities.add(currentValue);
         }
     }
 }

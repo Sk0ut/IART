@@ -115,10 +115,8 @@ public class DataSet implements ChromosomeEvaluator {
             BitSet subSet = bitSet.get(i*geneLength(), (i+1)*geneLength());
 
             ByteBuffer buffer = ByteBuffer.wrap(Arrays.copyOf(subSet.toByteArray(), Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN);
-            int selectedCity = buffer.getInt();
-            selectedCity = selectedCity % data.getCities().size();
-            if (selectedCity >= data.getCities().size())
-                continue;
+            int selectedCity = buffer.getInt() % data.getCities().size();
+
             citiesWithTribunals.set(selectedCity);
         }
         return citiesWithTribunals;
