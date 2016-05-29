@@ -84,10 +84,10 @@ public class testUI {
                 Main main = Main.getInstance();
                 if(currentOptions.getAlgorithm() == "genetic")
                     runner = new GeneticAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
-                    currentOptions.getMaxDistance(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
+                    currentOptions.getMaxDistance(), currentOptions.getPopulationSize(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
                 else
                     runner = new GeneticAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
-                            currentOptions.getMaxDistance(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
+                            currentOptions.getMaxDistance(), currentOptions.getPopulationSize(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
 
                 new Thread(runner).start();
 

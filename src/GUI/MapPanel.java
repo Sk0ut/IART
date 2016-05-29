@@ -59,12 +59,14 @@ public class MapPanel extends JPanel {
         add(mapLabel);
     }
 
-    public void addCityMarkers(List<City> cityList) {
+    public void addCityMarkers(List<City> cityList, boolean finished) {
         currentMap = deepCopy(unchangedMap);
 
 
         Graphics mapGraphics = currentMap.getGraphics();
-        mapGraphics.setColor(new Color(128, 0, 128));
+        if(finished)
+            mapGraphics.setColor(Color.green);
+        else mapGraphics.setColor(new Color(128, 0, 128));
 
 
         double latitude;

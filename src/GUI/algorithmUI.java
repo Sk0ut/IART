@@ -48,8 +48,11 @@ public class AlgorithmUI{
         updateTask =  executor.scheduleAtFixedRate((Runnable) () -> {
             boolean stop = AlgorithmUI.this.runner.isFinished();
             List<City> cityList = AlgorithmUI.this.runner.getCurrentSolution();
+            if (cityList == null)
+                return;
             double fitnessValue = AlgorithmUI.this.runner.getCurrentFitnessValue();
-            AlgorithmUI.this.updateSolution(cityList, fitnessValue);
+
+            AlgorithmUI.this.updateSolution(cityList, fitnessValue, stop);
 
             if (stop) {
                 AlgorithmUI.this.updateTask.cancel(true);
@@ -111,7 +114,7 @@ public class AlgorithmUI{
         algorithmFrame.add(algorithmPanel);
     }
 
-    public void updateSolution(List<City> cityList, double fitnessValue) {
+    public void updateSolution(List<City> cityList, double fitnessValue, boolean finished) {
         bestFitnessLabel.setText("Best Chromosome Fitness: " + fitnessValue);
 
         ArrayList<String> arrayList = new ArrayList<>();
@@ -125,7 +128,7 @@ public class AlgorithmUI{
         infoList.setListData(arrayList.toArray());
         totalCostLabel.setText("Total Cost: " + totalCost/1000000 + " M€");
 
-        mapPanel.addCityMarkers(cityList);
+        mapPanel.addCityMarkers(cityList, finished);
 
     }
 }

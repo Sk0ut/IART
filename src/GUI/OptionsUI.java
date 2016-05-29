@@ -14,7 +14,7 @@ public class OptionsUI extends JDialog{
     private ButtonGroup algorithmGroup;
 
     private JSpinner courtNumberSpinner;
-    private JSpinner budgetSpinner;
+    private JSpinner populationSpinner;
     private JSpinner maxDistanceSpinner;
 
     private JRadioButton geneticButton;
@@ -80,21 +80,21 @@ public class OptionsUI extends JDialog{
         optionsPanel.add(courtNumberSpinner, constraints);
 
 
-        JLabel budgetLabel = new JLabel("Budget (in million $)");
+        JLabel populationLabel = new JLabel("Chromosome population size");
         insets = new Insets(8, 8, 8, 0);
         constraints.insets = insets;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 0;
         constraints.gridy = 2;
-        optionsPanel.add(budgetLabel, constraints);
+        optionsPanel.add(populationLabel, constraints);
 
-        budgetSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 500, 10));
+        populationSpinner = new JSpinner(new SpinnerNumberModel(1000, 50, 10000, 200));
         insets = new Insets(8, 0, 8, 8);
         constraints.insets = insets;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 1;
         constraints.gridy = 2;
-        optionsPanel.add(budgetSpinner, constraints);
+        optionsPanel.add(populationSpinner, constraints);
 
 
 
@@ -159,7 +159,7 @@ public class OptionsUI extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 currentOptions.setAlgorithm(geneticButton.isSelected() ? "genetic" : "simulated annealing");
                 currentOptions.setNumberTribunals((Integer) courtNumberSpinner.getValue());
-                currentOptions.setBudget((Integer) budgetSpinner.getValue());
+                currentOptions.setPopulationSize((Integer) populationSpinner.getValue());
                 currentOptions.setMaxDistance((Integer) maxDistanceSpinner.getValue() * 1000);
                 dispose();
             }
@@ -180,7 +180,7 @@ public class OptionsUI extends JDialog{
         else algorithmGroup.setSelected(simmulatedAnnealingButton.getModel(), true);
 
         courtNumberSpinner.setValue(currentOptions.getNumberTribunals());
-        budgetSpinner.setValue(currentOptions.getBudget());
+        populationSpinner.setValue(currentOptions.getPopulationSize());
         maxDistanceSpinner.setValue(currentOptions.getMaxDistance());
 
     }

@@ -4,14 +4,14 @@ package GUI;
 public class CustomOptions {
     private String algorithm;
     private int numberTribunals;
-    private int budget;
     private int maxDistance;
+    private int populationSize;
 
     public CustomOptions(){
         algorithm = "genetic";
         numberTribunals = 50;
-        budget = 50;
         maxDistance = 50000;
+        populationSize = 1000;
     }
 
     public int getNumberTribunals() {
@@ -30,19 +30,19 @@ public class CustomOptions {
         this.algorithm = algorithm;
     }
 
-    public int getBudget() {
-        return budget;
-    }
-
-    public void setBudget(int budget) {
-        this.budget = budget;
-    }
-
     public int getMaxDistance() {
         return maxDistance;
     }
 
     public void setMaxDistance(int maxDistance) {
         this.maxDistance = maxDistance;
+    }
+
+    public int getPopulationSize() {
+        return populationSize;
+    }
+
+    public void setPopulationSize(int populationSize) {
+        this.populationSize = populationSize;
     }
 }

@@ -20,17 +20,19 @@ public class GeneticAlgorithmRunner extends AlgorithmRunner {
 
     private GeneticAlgorithmTest geneticAlgorithm;
 
-    public GeneticAlgorithmRunner(Data data, int numTribunals, int maxDistance, int settings) {
+    public GeneticAlgorithmRunner(Data data, int numTribunals, int maxDistance, int populationSize, int settings) {
         super(data, numTribunals);
 
         dataSet = new DataSet(data, 1000, 500, maxDistance, numTribunals);
         finished = false;
-        geneticAlgorithm = new GeneticAlgorithmTest(dataSet, 10000, settings);
+        geneticAlgorithm = new GeneticAlgorithmTest(dataSet, populationSize, settings);
     }
 
     @Override
     public List<City> getCurrentSolution() {
         Chromosome best = geneticAlgorithm.getBestChromosomeOverall();
+        if (best == null)
+            return null;
         return dataSet.getTribunals(best);
     }
 
