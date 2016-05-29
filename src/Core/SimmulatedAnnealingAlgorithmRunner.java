@@ -1,16 +1,17 @@
 package Core;
 
-import algorithms.SimmulatedAnnealing;
+import algorithms.SimulatedAnnealing;
+import algorithms.simulated_annealing.OneRandomTribunalStateTransition;
+import algorithms.simulated_annealing.State;
 import cityparser.City;
 import cityparser.Data;
-import utils.*;
 
 import java.util.List;
 public class SimmulatedAnnealingAlgorithmRunner extends  AlgorithmRunner{
 
     private DataSet dataSet;
     private boolean finished;
-    private SimmulatedAnnealing simmulatedAnnealing;
+    private SimulatedAnnealing simulatedAnnealing;
 
 
     public SimmulatedAnnealingAlgorithmRunner(Data data, int numTribunals, int maxDistance, int temperature, double coolingRate) {
@@ -20,12 +21,12 @@ public class SimmulatedAnnealingAlgorithmRunner extends  AlgorithmRunner{
         finished = false;
 
         OneRandomTribunalStateTransition function = new OneRandomTribunalStateTransition(numTribunals, data.getCities().size());
-        simmulatedAnnealing = new SimmulatedAnnealing(function, temperature, coolingRate, dataSet);
+        simulatedAnnealing = new SimulatedAnnealing(function, temperature, coolingRate, dataSet);
     }
 
     @Override
     public List<City> getCurrentSolution() {
-        State best = simmulatedAnnealing.getBestState();
+        State best = simulatedAnnealing.getBestState();
         if (best == null)
             return null;
         return dataSet.getTribunals(best);
@@ -33,12 +34,12 @@ public class SimmulatedAnnealingAlgorithmRunner extends  AlgorithmRunner{
 
     @Override
     public double getCurrentFitnessValue() {
-        return dataSet.evaluate(simmulatedAnnealing.getBestState());
+        return dataSet.evaluate(simulatedAnnealing.getBestState());
     }
 
     @Override
     public int getCurrentIteration() {
-        return simmulatedAnnealing.getIterations();
+        return simulatedAnnealing.getIterations();
     }
 
     @Override
@@ -52,7 +53,7 @@ public class SimmulatedAnnealingAlgorithmRunner extends  AlgorithmRunner{
 
         boolean successful = false;
         while (!successful) {
-            simmulatedAnnealing.run();
+            simulatedAnnealing.run();
             successful = true;
         }
         finished = true;

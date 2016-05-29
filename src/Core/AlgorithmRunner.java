@@ -5,9 +5,7 @@ import cityparser.Data;
 
 import java.util.List;
 
-/**
- * Created by Luís on 29/05/2016.
- */
+
 public abstract class AlgorithmRunner implements Runnable{
     private Data data;
     private int numTribunals;

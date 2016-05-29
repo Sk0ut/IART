@@ -1,11 +1,11 @@
 package algorithms;
 
-import cityparser.City;
-import utils.Chromosome;
-import utils.OptimizationAlgorithm;
+import algorithms.OptimizationAlgorithm;
+import algorithms.genetic_algorithm.Chromosome;
+import algorithms.genetic_algorithm.ChromosomeEvaluator;
+import algorithms.genetic_algorithm.DeadPopulationException;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +24,7 @@ import java.util.Random;
  * the given probability.
  * 5- Check if the end condition applies. If not, return to step 2.
  */
-public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
+public class GeneticAlgorithm extends OptimizationAlgorithm {
 
     /**
      * Uses the tournament approach in selecting the two parents. The tournament approach consists in choosing N
@@ -113,6 +113,8 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
      */
     private Chromosome bestChromosomeOverall;
 
+    private ChromosomeEvaluator evaluator;
+
     /**
      * The Genetic Algorithm constructor.
      * @param chromosomeLength The length in genes of each chromosome.
@@ -125,12 +127,16 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
 
 
 
-    public GeneticAlgorithm(int chromosomeLength, int initialPopulation, int settings){
+    public GeneticAlgorithm(ChromosomeEvaluator evaluator, int chromosomeLength, int initialPopulation, int settings){
         chromosomes = new ArrayList<>();
         for(int c = 0; c < initialPopulation; ++c){
             Chromosome chromosome = new Chromosome(chromosomeLength);
             chromosomes.add(chromosome);
         }
+        this.evaluator = evaluator;
+        setUniformRate(0.5);
+        setElitismSize(100);
+        setMutationRate(0.002);
 
         if((settings & TOURNAMENTSELECTION) != 0){
             tournamentSize = initialPopulation/4;
@@ -429,5 +435,12 @@ public abstract class GeneticAlgorithm extends OptimizationAlgorithm {
         return bestChromosomeOverall;
     }
 
-    protected abstract double evaluate(Chromosome chromosome);
+    public double evaluate(Chromosome chromosome) {
+        return evaluator.evaluate(chromosome);
+    }
+
+    @Override
+    public boolean stopCondition() {
+        return getIterations() > 50;
+    }
 }

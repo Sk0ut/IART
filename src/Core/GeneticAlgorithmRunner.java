@@ -1,28 +1,25 @@
 package Core;
 
-import algorithms.DeadPopulationException;
+import algorithms.GeneticAlgorithm;
+import algorithms.genetic_algorithm.DeadPopulationException;
 import cityparser.City;
 import cityparser.Data;
-import utils.Chromosome;
-import utils.DataSet;
+import algorithms.genetic_algorithm.Chromosome;
 
 import java.util.List;
 
-/**
- * Created by Luís on 29/05/2016.
- */
 public class GeneticAlgorithmRunner extends AlgorithmRunner {
     private DataSet dataSet;
     private boolean finished;
 
-    private GeneticAlgorithmTest geneticAlgorithm;
+    private GeneticAlgorithm geneticAlgorithm;
 
     public GeneticAlgorithmRunner(Data data, int numTribunals, int maxDistance, int populationSize, int settings) {
         super(data, numTribunals);
 
         dataSet = new DataSet(data, 1000, 500, maxDistance, numTribunals);
         finished = false;
-        geneticAlgorithm = new GeneticAlgorithmTest(dataSet, populationSize, settings);
+        geneticAlgorithm = new GeneticAlgorithm(dataSet, dataSet.chromosomeLength(), populationSize, settings);
     }
 
     @Override

@@ -1,13 +1,8 @@
 package Core;
 
 import GUI.testUI;
-import algorithms.DeadPopulationException;
-import algorithms.GeneticAlgorithm;
-import cityparser.City;
 import cityparser.CityParser;
 import cityparser.Data;
-import utils.Chromosome;
-import utils.DataSet;
 
 public class Main {
     /* File to store the city info */
@@ -32,38 +27,9 @@ public class Main {
     }
 
     public static void main (String args[]) {
-
-
         Main mainObject = Main.getInstance();
         mainObject.getGraphicalInterface().render();
     }
-
-
-    /*
-    public static void test() {
-        byte[] bytes = new byte[]{0b01001111, 0b10010};
-        for (byte aByte : bytes) {
-            System.out.println(aByte);
-        }
-        BitSet set = BitSet.valueOf(bytes);
-        System.out.println(set);
-
-
-        BitSet bitSet = BitSet.valueOf(bytes);
-        BitSet tribunals = new BitSet();
-
-        for (int i = 0; i < 4; ++i) {
-            BitSet subSet = bitSet.get(i*3, (i+1)*3);
-
-            ByteBuffer buffer = ByteBuffer.wrap(Arrays.copyOf(subSet.toByteArray(), Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN);
-            tribunals.set(buffer.getInt());
-        }
-
-        System.out.println(tribunals);
-        System.out.println(tribunals.cardinality());
-    }
-
-    */
 
     public testUI getGraphicalInterface() {
         return graphicalInterface;

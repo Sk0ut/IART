@@ -1,4 +1,4 @@
-package utils;
+package algorithms.simulated_annealing;
 
 
 import java.util.Random;

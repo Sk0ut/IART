@@ -1,6 +1,4 @@
-package utils;
-
-import java.util.Random;
+package algorithms.simulated_annealing;
 
 public class State {
     private int [] tribunals;

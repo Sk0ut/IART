@@ -1,11 +1,10 @@
 package algorithms;
 
-import utils.OptimizationAlgorithm;
-import utils.State;
-import utils.StateEvaluator;
-import utils.StateTransitionFunction;
+import algorithms.simulated_annealing.State;
+import algorithms.simulated_annealing.StateEvaluator;
+import algorithms.simulated_annealing.StateTransitionFunction;
 
-public class SimmulatedAnnealing extends OptimizationAlgorithm {
+public class SimulatedAnnealing extends OptimizationAlgorithm {
     private final StateTransitionFunction transitionFunction;
     private double initialTemperature;
     private double coolingRate;
@@ -13,7 +12,7 @@ public class SimmulatedAnnealing extends OptimizationAlgorithm {
     private double currentTemperature;
     private StateEvaluator evaluator;
 
-    public SimmulatedAnnealing(StateTransitionFunction transitionFunction, double initialTemperature, double coolingRate, StateEvaluator evaluator){
+    public SimulatedAnnealing(StateTransitionFunction transitionFunction, double initialTemperature, double coolingRate, StateEvaluator evaluator){
         this.transitionFunction = transitionFunction;
         this.initialTemperature = initialTemperature;
         this.coolingRate = coolingRate;

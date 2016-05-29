@@ -1,4 +1,4 @@
-package utils;
+package algorithms;
 
 public abstract class OptimizationAlgorithm {
     private int iterations = 0;

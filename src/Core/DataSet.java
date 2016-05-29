@@ -1,7 +1,11 @@
-package utils;
+package Core;
 
+import algorithms.genetic_algorithm.Chromosome;
+import algorithms.genetic_algorithm.ChromosomeEvaluator;
 import cityparser.City;
 import cityparser.Data;
+import algorithms.simulated_annealing.State;
+import algorithms.simulated_annealing.StateEvaluator;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
