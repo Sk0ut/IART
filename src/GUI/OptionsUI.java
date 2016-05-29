@@ -1,5 +1,7 @@
 package GUI;
 
+import sun.plugin.javascript.JSClassLoader;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -17,12 +19,17 @@ public class OptionsUI extends JDialog{
     private JSpinner populationSpinner;
     private JSpinner maxDistanceSpinner;
 
+    private JSpinner temperatureSpinner;
+    private JSpinner coolingSpinner;
+
+    private JCheckBox elitismBox;
+    private JComboBox selectionBox;
+    private JComboBox breedingBox;
+
     private JRadioButton geneticButton;
     private JRadioButton simmulatedAnnealingButton;
     private JButton saveButton;
     private JButton cancelButton;
-
-
 
     private CustomOptions currentOptions;
 
@@ -45,35 +52,30 @@ public class OptionsUI extends JDialog{
         constraints.gridy = 0;
 
         JLabel algorithmLabel = new JLabel("Algorithm: ");
-        insets = new Insets(8, 8, 8, 0);
-        constraints.insets = insets;
+        constraints.insets = new Insets(8, 8, 8, 0);
         optionsPanel.add(algorithmLabel, constraints);
 
         algorithmGroup = new ButtonGroup();
         geneticButton = new JRadioButton("Genetic Algorithm");
         algorithmGroup.add(geneticButton);
-        insets = new Insets(8, 0, 8, 4);
-        constraints.insets = insets;
+        constraints.insets = new Insets(8, 0, 8, 4);
         constraints.gridx = 1;
         optionsPanel.add(geneticButton, constraints);
 
         simmulatedAnnealingButton = new JRadioButton("Simulated Annealing");
-        insets = new Insets(8, 4, 8, 8);
-        constraints.insets = insets;
+        constraints.insets = new Insets(8, 4, 8, 8);
         constraints.gridx = 2;
         algorithmGroup.add(simmulatedAnnealingButton);
         optionsPanel.add(simmulatedAnnealingButton, constraints);
 
         JLabel courtNumberLabel = new JLabel("Court Number");
-        insets = new Insets(8, 8, 8, 0);
-        constraints.insets = insets;
+        constraints.insets = new Insets(8, 8, 8, 0);
         constraints.gridx = 0;
         constraints.gridy = 1;
         optionsPanel.add(courtNumberLabel, constraints);
 
         courtNumberSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 200, 5));
-        insets = new Insets(8, 0, 8, 8);
-        constraints.insets = insets;
+        constraints.insets = new Insets(8, 0, 8, 8);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 1;
         constraints.gridy = 1;
@@ -81,38 +83,96 @@ public class OptionsUI extends JDialog{
 
 
         JLabel populationLabel = new JLabel("Chromosome population size");
-        insets = new Insets(8, 8, 8, 0);
-        constraints.insets = insets;
+        constraints.insets = new Insets(8, 8, 8, 0);
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 0;
         constraints.gridy = 2;
         optionsPanel.add(populationLabel, constraints);
 
         populationSpinner = new JSpinner(new SpinnerNumberModel(1000, 50, 10000, 200));
-        insets = new Insets(8, 0, 8, 8);
-        constraints.insets = insets;
+        constraints.insets = new Insets(8, 0, 8, 8);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 1;
         constraints.gridy = 2;
         optionsPanel.add(populationSpinner, constraints);
 
-
-
         JLabel distanceLabel = new JLabel("Distance (in km)");
-        insets = new Insets(8, 8, 8, 0);
-        constraints.insets = insets;
+        constraints.insets = new Insets(8, 8, 8, 0);
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 0;
         constraints.gridy = 3;
         optionsPanel.add(distanceLabel, constraints);
 
         maxDistanceSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 500, 10));
-        insets = new Insets(8, 0, 8, 8);
-        constraints.insets = insets;
+        constraints.insets = new Insets(8, 0, 8, 8);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 1;
         constraints.gridy = 3;
         optionsPanel.add(maxDistanceSpinner, constraints);
+
+        JLabel geneticAreaLabel = new JLabel("Genetic configuration");
+        constraints.insets = new Insets(8, 8, 8, 0);
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 1;
+        constraints.gridwidth = 2;
+        constraints.gridy = 4;
+        optionsPanel.add(geneticAreaLabel, constraints);
+
+        elitismBox = new JCheckBox("Elitism");
+        constraints.insets = new Insets(8, 0, 8, 8);
+        constraints.fill = GridBagConstraints.VERTICAL;
+        constraints.gridwidth = 1;
+        constraints.gridx = 0;
+        constraints.gridy = 5;
+        optionsPanel.add(elitismBox, constraints);
+
+        selectionBox = new JComboBox<>(new String[]{"Roulette Selection", "Tournament Selection"});
+        constraints.gridx = 1;
+        constraints.insets = new Insets(8, 0, 8, 16);
+        constraints.fill = GridBagConstraints.BOTH;
+        optionsPanel.add(selectionBox, constraints);
+
+        breedingBox = new JComboBox<>(new String[]{"Roulette Crossover", "Segment Crossover", "Uniform Crossover"});
+        constraints.gridx = 2;
+        constraints.insets = new Insets(8, 16, 8, 20);
+        optionsPanel.add(breedingBox, constraints);
+
+        JLabel annealingLabel = new JLabel("Sim. Annealing configuration");
+        constraints.insets = new Insets(8, 8, 8, 0);
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 1;
+        constraints.gridwidth = 2;
+        constraints.gridy = 6;
+        optionsPanel.add(annealingLabel, constraints);
+
+        JLabel temperatureLabel = new JLabel("Initial Temperate");
+        constraints.insets = new Insets(8, 8, 8, 0);
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridwidth = 1;
+        constraints.gridx = 0;
+        constraints.gridy = 7;
+        optionsPanel.add(temperatureLabel, constraints);
+
+        temperatureSpinner = new JSpinner(new SpinnerNumberModel(4000, 1000, 100000, 500));
+        constraints.insets = new Insets(8, 0, 8, 20);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 7;
+        optionsPanel.add(temperatureSpinner, constraints);
+
+        JLabel coolingLabel = new JLabel("Cooling Rate (0...1)");
+        constraints.insets = new Insets(8, 8, 8, 0);
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 0;
+        constraints.gridy = 8;
+        optionsPanel.add(coolingLabel, constraints);
+
+        coolingSpinner = new JSpinner(new SpinnerNumberModel(0.001, 0, 1, 0.001));
+        constraints.insets = new Insets(8, 0, 8, 20);
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 1;
+        constraints.gridy = 8;
+        optionsPanel.add(coolingSpinner, constraints);
 
 
 
@@ -123,8 +183,8 @@ public class OptionsUI extends JDialog{
         constraints.insets = insets;
         constraints.fill = GridBagConstraints.VERTICAL;
         constraints.gridx = 0;
-        constraints.gridy = 4;
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 1;
+        constraints.gridy = 9;
         optionsPanel.add(saveButton, constraints);
 
         cancelButton = new JButton("Cancel");
@@ -132,7 +192,7 @@ public class OptionsUI extends JDialog{
         constraints.insets = insets;
         constraints.fill = GridBagConstraints.VERTICAL;
         constraints.gridx = 2;
-        constraints.gridy = 4;
+        constraints.gridy = 9;
         constraints.gridwidth = 2;
         optionsPanel.add(cancelButton, constraints);
 
@@ -143,7 +203,7 @@ public class OptionsUI extends JDialog{
 
     public void render() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize((int)screenSize.getWidth()/4,(int) screenSize.getHeight()/4);
+        setSize((int)(screenSize.getWidth()/2.5),(int) (screenSize.getHeight()/2.5));
 
         createOptionsLayout();
         addListeners();
@@ -161,6 +221,11 @@ public class OptionsUI extends JDialog{
                 currentOptions.setNumberTribunals((Integer) courtNumberSpinner.getValue());
                 currentOptions.setPopulationSize((Integer) populationSpinner.getValue());
                 currentOptions.setMaxDistance((Integer) maxDistanceSpinner.getValue() * 1000);
+                currentOptions.setElitist(elitismBox.isSelected());
+                currentOptions.setSelection((String) selectionBox.getSelectedItem());
+                currentOptions.setBreeding((String)breedingBox.getSelectedItem());
+                currentOptions.setInitialTemperature((Integer) temperatureSpinner.getValue());
+                currentOptions.setCoolingRate((Double) coolingSpinner.getValue());
                 dispose();
             }
         });
@@ -182,6 +247,13 @@ public class OptionsUI extends JDialog{
         courtNumberSpinner.setValue(currentOptions.getNumberTribunals());
         populationSpinner.setValue(currentOptions.getPopulationSize());
         maxDistanceSpinner.setValue(currentOptions.getMaxDistance() / 1000);
+        temperatureSpinner.setValue(currentOptions.getInitialTemperature());
+        coolingSpinner.setValue(currentOptions.getCoolingRate());
+
+        elitismBox.setSelected(currentOptions.isElitist());
+        selectionBox.setSelectedItem(currentOptions.getSelection());
+        breedingBox.setSelectedItem(currentOptions.getBreeding());
+
 
     }
 }

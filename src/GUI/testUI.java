@@ -83,12 +83,13 @@ public class testUI {
             public void actionPerformed(ActionEvent e) {
                 AlgorithmRunner runner;
                 Main main = Main.getInstance();
-                if(currentOptions.getAlgorithm() == "genetic")
+                if(currentOptions.getAlgorithm() == "genetic") {
+                    int settings = currentOptions.getBreedingInteger() | currentOptions.getSelectionInteger() | currentOptions.getElitismInteger();
                     runner = new GeneticAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
-                    currentOptions.getMaxDistance(), currentOptions.getPopulationSize(), GeneticAlgorithm.ELITISM | GeneticAlgorithm.ROULETTESELECTION | GeneticAlgorithm.ROULETTECROSSOVER);
-                else
+                            currentOptions.getMaxDistance(), currentOptions.getPopulationSize(), settings);
+                } else
                     runner = new SimmulatedAnnealingAlgorithmRunner(main.getData(), currentOptions.getNumberTribunals(),
-                            currentOptions.getMaxDistance());
+                            currentOptions.getMaxDistance(), currentOptions.getInitialTemperature(), currentOptions.getCoolingRate());
 
                 new Thread(runner).start();
 

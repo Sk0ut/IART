@@ -17,14 +17,14 @@ public class SimmulatedAnnealingAlgorithmRunner extends  AlgorithmRunner{
     private SimmulatedAnnealing simmulatedAnnealing;
 
 
-    public SimmulatedAnnealingAlgorithmRunner(Data data, int numTribunals, int maxDistance) {
+    public SimmulatedAnnealingAlgorithmRunner(Data data, int numTribunals, int maxDistance, int temperature, double coolingRate) {
         super(data, numTribunals);
 
         dataSet = new DataSet(data, 1000, 500, maxDistance, numTribunals);
         finished = false;
 
         OneRandomTribunalStateTransition function = new OneRandomTribunalStateTransition(numTribunals, data.getCities().size());
-        simmulatedAnnealing = new SimmulatedAnnealing(function, 50000, 0.001, dataSet);
+        simmulatedAnnealing = new SimmulatedAnnealing(function, temperature, coolingRate, dataSet);
     }
 
     @Override
