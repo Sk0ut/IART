@@ -1,7 +1,7 @@
 package test.simulated_annealing;
 
+
 import Core.DataSet;
-import algorithms.GeneticAlgorithm;
 import algorithms.SimulatedAnnealing;
 import algorithms.simulated_annealing.OneRandomTribunalStateTransition;
 import algorithms.simulated_annealing.State;
@@ -13,10 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.util.Locale;
 
-public class InitialTempVariationTest {
-
+public class coolingRateVariationTest {
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
         CityParser parser = new CityParser();
         Data data = parser.getData("cities.ser");
@@ -27,13 +25,13 @@ public class InitialTempVariationTest {
 
         StateTransitionFunction function = new OneRandomTribunalStateTransition(numTribunals, data.getCities().size());
 
-        PrintWriter writer = new PrintWriter("initTempVar.csv", "UTF-8");
+        PrintWriter writer = new PrintWriter("coolRateVar.csv", "UTF-8");
 
         int iterations = 30;
 
-        for(int initialTemperature = 1; initialTemperature <= 100; initialTemperature += 1) {
+        for(double coolingRate = 0.01; coolingRate <= 1; coolingRate += 0.01) {
 
-            SimulatedAnnealing algorithm = new SimulatedAnnealing(function, initialTemperature, 0.1, dataSet);
+            SimulatedAnnealing algorithm = new SimulatedAnnealing(function, 100, coolingRate, dataSet);
             BigInteger accumulatedTime =  BigInteger.ZERO;
             BigInteger accumulatedFitness = BigInteger.ZERO;
 
@@ -53,7 +51,7 @@ public class InitialTempVariationTest {
             long fitnessValue = accumulatedFitness.divide(BigInteger.valueOf(iterations)).longValue();
             long elapsedTime = accumulatedTime.divide(BigInteger.valueOf(iterations)).longValue();
 
-            writer.println("" + initialTemperature + "," + (long)fitnessValue + "," + elapsedTime);
+            writer.println("" + (int)(coolingRate*100) + "," + fitnessValue + "," + elapsedTime);
         }
 
         writer.close();

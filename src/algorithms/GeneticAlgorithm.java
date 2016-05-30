@@ -173,7 +173,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
 
         double averageValue = getAverageValue();
         Chromosome chromosome = getBestChromosome();
-        System.out.println("Start: Best Value: " + chromosome.getValue() + " Average Value: " + averageValue);
+        //System.out.println("Start: Best Value: " + chromosome.getValue() + " Average Value: " + averageValue);
 
         resetIterations();
         while(!stopCondition()) {
@@ -185,7 +185,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
             averageValue = getAverageValue();
             incrementIterations();
             chromosome = getBestChromosome();
-            System.out.println("Iteration " + getIterations() + ": Best Value: " + chromosome.getValue() + " Average Value: " + averageValue + " Population Size: " + chromosomes.size());
+            //System.out.println("Iteration " + getIterations() + ": Best Value: " + chromosome.getValue() + " Average Value: " + averageValue + " Population Size: " + chromosomes.size());
         }
 
         return bestChromosomeOverall;
@@ -209,7 +209,7 @@ public class GeneticAlgorithm extends OptimizationAlgorithm {
         for (Chromosome chromosome : chromosomes) {
             averageValue = averageValue.add(new BigDecimal(chromosome.getValue()));
         }
-        averageValue = averageValue.divide(new BigDecimal(chromosomes.size()));
+        averageValue = averageValue.divide(new BigDecimal(chromosomes.size()), RoundingMode.HALF_UP);
 
         return averageValue.doubleValue();
     }
